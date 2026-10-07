@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> NISCHAL TIMSINA | Graphics, animation and web design</title>
+    <meta name="description" content="Portfolio of graphics, animation and web design work.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #100C2A;
+            --bg2: #1A1445;
+            --text: #F4F2FF;
+            --muted: #A9A4D6;
+            --coral: #FF5C7A;
+            --cyan: #36E1FF;
+            --lemon: #FFE45C;
+            --wa: #25D366;
+            --font: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.55;
+            font-size: 1.05rem;
+            overflow-x: hidden
+        }
+
+        a {
+            color: inherit
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--cyan);
+            outline-offset: 3px
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            position: relative;
+            z-index: 1
+        }
+
+        #bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0;
+            background: linear-gradient(90deg, var(--coral), var(--lemon), var(--cyan));
+            z-index: 50
+        }
+
+        #glow {
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            left: 0;
+            top: 0;
+            background: radial-gradient(circle, rgba(54, 225, 255, .18), transparent 65%);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .5;
+            z-index: 0;
+            animation: float 14s ease-in-out infinite
+        }
+
+        .b1 {
+            width: 340px;
+            height: 340px;
+            background: var(--coral);
+            top: 40px;
+            right: -80px
+        }
+
+        .b2 {
+            width: 300px;
+            height: 300px;
+            background: #6B4DFF;
+            top: 360px;
+            left: -100px;
+            animation-delay: -5s
+        }
+
+        @keyframes float {
+            50% {
+                transform: translate(40px, -50px) scale(1.15)
+            }
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(12px);
+            background: rgba(16, 12, 42, .6)
+        }
+
+        header .wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            padding-bottom: 1rem
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            text-decoration: none;
+        }
+
+        /* Header Mascot Animations: Single-Eye Wink & Welcome Wave */
+        .cat-header {
+            width: 52px;
+            height: 52px;
+            overflow: visible;
+        }
+
+        .cat-header .wink-eye {
+            transform-origin: 185px 150px;
+            animation: singleEyeWink 3.2s infinite;
+        }
+
+        .cat-header .wave-hand {
+            transform-origin: 240px 210px;
+            animation: welcomeWave 2s infinite ease-in-out;
+        }
+
+        @keyframes singleEyeWink {
+
+            0%,
+            85%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            92% {
+                transform: scaleY(0.08);
+            }
+        }
+
+        @keyframes welcomeWave {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-25deg);
+            }
+
+            75% {
+                transform: rotate(15deg);
+            }
+        }
+
+        /* Selected Work Section: Section Title + Big Interactive Cat Mascot */
+        .work-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.6rem;
+            flex-wrap: wrap;
+        }
+
+        .cat-work-mascot {
+            width: 220px;
+            height: 180px;
+            overflow: visible;
+            filter: drop-shadow(0 10px 20px rgba(186, 85, 211, 0.25));
+        }
+
+        .cat-work-mascot .reaching-arm {
+            transform-origin: 220px 180px;
+            animation: reachAndPoint 4s infinite ease-in-out;
+        }
+
+        .cat-work-mascot .eye-blink {
+            transform-origin: center;
+            animation: catBlink 4s infinite;
+        }
+
+        .cat-work-mascot .pupils {
+            animation: lookAtCards 4s infinite ease-in-out;
+        }
+
+        @keyframes reachAndPoint {
+
+            0%,
+            100% {
+                transform: rotate(0deg) translate(0, 0);
+            }
+
+            50% {
+                transform: rotate(-18deg) translate(25px, 15px);
+            }
+        }
+
+        @keyframes catBlink {
+
+            0%,
+            94%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            97% {
+                transform: scaleY(0.1);
+            }
+        }
+
+        @keyframes lookAtCards {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(5px, 6px);
+            }
+        }
+
+        /* Footer Mascot Animations: Goodbye Wave */
+        .footer-cat-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cat-footer {
+            width: 90px;
+            height: 90px;
+            overflow: visible;
+        }
+
+        .cat-footer .bye-arm {
+            transform-origin: 60px 180px;
+            animation: goodbyeWave 1.6s infinite ease-in-out;
+        }
+
+        @keyframes goodbyeWave {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(35deg);
+            }
+        }
+
+        nav a {
+            margin-left: 1.4rem;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            height: 2px;
+            width: 100%;
+            background: var(--lemon);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1)
+        }
+
+        .hero {
+            padding: 4rem 0 3rem;
+            position: relative
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 8vw, 5.8rem);
+            line-height: .96;
+            font-weight: 800;
+            letter-spacing: -.035em;
+            max-width: 12ch
+        }
+
+        h1 .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top;
+            padding-bottom: .08em
+        }
+
+        h1 .w i {
+            display: inline-block;
+            font-style: normal;
+            transform: translateY(110%) rotate(6deg);
+            animation: up .9s cubic-bezier(.2, .9, .2, 1) forwards
+        }
+
+        h1 .w:nth-child(2) i {
+            animation-delay: .1s
+        }
+
+        h1 .w:nth-child(3) i {
+            animation-delay: .2s
+        }
+
+        h1 .w:nth-child(4) i {
+            animation-delay: .3s
+        }
+
+        h1 .w:nth-child(5) i {
+            animation-delay: .4s
+        }
+
+        h1 .hl {
+            background: linear-gradient(90deg, var(--coral), var(--lemon), var(--cyan), var(--coral));
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: up .9s .4s cubic-bezier(.2, .9, .2, 1) forwards, shine 5s linear infinite
+        }
+
+        @keyframes up {
+            to {
+                transform: none
+            }
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 300% 0
+            }
+        }
+
+        .lead {
+            margin-top: 1.8rem;
+            max-width: 44ch;
+            font-size: 1.25rem;
+            color: var(--muted);
+            opacity: 0;
+            animation: fade .8s .8s forwards
+        }
+
+        .cta {
+            display: flex;
+            gap: .9rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fade .8s 1s forwards
+        }
+
+        @keyframes fade {
+            to {
+                opacity: 1
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: .95rem 1.7rem;
+            border-radius: 999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform .2s, box-shadow .3s;
+            will-change: transform
+        }
+
+        .btn.main {
+            background: var(--lemon);
+            color: #1B1640;
+            box-shadow: 0 0 0 0 rgba(255, 228, 92, .6);
+            animation: pulse 2.4s infinite 2s
+        }
+
+        .btn.ghost {
+            border: 2px solid rgba(244, 242, 255, .35)
+        }
+
+        .btn:hover {
+            box-shadow: 0 10px 30px rgba(255, 92, 122, .35)
+        }
+
+        @keyframes pulse {
+            70% {
+                box-shadow: 0 0 0 18px rgba(255, 228, 92, 0)
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity .8s, transform .8s cubic-bezier(.2, .9, .2, 1)
+        }
+
+        .reveal.on {
+            opacity: 1;
+            transform: none
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            letter-spacing: -.02em;
+            margin-bottom: 0
+        }
+
+        section {
+            padding: 3rem 0
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 1.6rem
+        }
+
+        .card {
+            background: var(--bg2);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(244, 242, 255, .1);
+            transition: transform .2s ease-out, border-color .3s;
+            transform-style: preserve-3d;
+            will-change: transform
+        }
+
+        .card:hover {
+            border-color: var(--cyan)
+        }
+
+        .cover {
+            aspect-ratio: 4/3;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            place-items: center
+        }
+
+        .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .6s
+        }
+
+        .card:hover .cover img {
+            transform: scale(1.08)
+        }
+
+        .text {
+            padding: 1.2rem 1.4rem 1.5rem
+        }
+
+        .text h3 {
+            font-size: 1.3rem
+        }
+
+        .text p {
+            color: var(--muted);
+            margin-top: .3rem
+        }
+
+        .c1 {
+            background: linear-gradient(135deg, #3A2BFF, #FF5C7A)
+        }
+
+        .c1 b {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--lemon);
+            animation: bounce 2.2s ease-in-out infinite
+        }
+
+        .c1 b:nth-child(1) {
+            width: 70px;
+            height: 70px;
+            left: 18%;
+            top: 30%
+        }
+
+        .c1 b:nth-child(2) {
+            width: 46px;
+            height: 46px;
+            left: 55%;
+            top: 50%;
+            animation-delay: -.7s;
+            background: var(--cyan)
+        }
+
+        .c1 b:nth-child(3) {
+            width: 30px;
+            height: 30px;
+            left: 75%;
+            top: 25%;
+            animation-delay: -1.4s
+        }
+
+        @keyframes bounce {
+            50% {
+                transform: translateY(-34px)
+            }
+        }
+
+        .c2 {
+            background: #14104A
+        }
+
+        .c2 b {
+            position: absolute;
+            border: 4px solid var(--cyan);
+            border-radius: 50%;
+            animation: ring 3s linear infinite;
+            opacity: 0
+        }
+
+        .c2 b:nth-child(1) {
+            width: 60px;
+            height: 60px
+        }
+
+        .c2 b:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            animation-delay: 1s;
+            border-color: var(--coral)
+        }
+
+        .c2 b:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            animation-delay: 2s;
+            border-color: var(--lemon)
+        }
+
+        @keyframes ring {
+            0% {
+                transform: scale(.3);
+                opacity: 1
+            }
+
+            100% {
+                transform: scale(4.5);
+                opacity: 0
+            }
+        }
+
+        .c3 {
+            background: linear-gradient(160deg, #0E2A47, #36E1FF);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+            padding-bottom: 18%
+        }
+
+        .c3 b {
+            width: 14%;
+            background: var(--lemon);
+            border-radius: 8px 8px 0 0;
+            height: 20%;
+            animation: eq 1.2s ease-in-out infinite
+        }
+
+        .c3 b:nth-child(2) {
+            animation-delay: -.2s;
+            background: var(--coral)
+        }
+
+        .c3 b:nth-child(3) {
+            animation-delay: -.5s
+        }
+
+        .c3 b:nth-child(4) {
+            animation-delay: -.8s;
+            background: #fff
+        }
+
+        .c3 b:nth-child(5) {
+            animation-delay: -.35s;
+            background: var(--coral)
+        }
+
+        @keyframes eq {
+            50% {
+                height: 70%
+            }
+        }
+
+        .c4 {
+            background: linear-gradient(120deg, #FFE45C, #FF5C7A, #6B4DFF, #FFE45C);
+            background-size: 300% 100%;
+            animation: shine 6s linear infinite
+        }
+
+        .c4 b {
+            width: 46%;
+            height: 46%;
+            border: 5px solid #fff;
+            border-radius: 22%;
+            animation: spin 6s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .about {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            align-items: start
+        }
+
+        .about p {
+            max-width: 50ch;
+            color: var(--muted);
+            font-size: 1.15rem
+        }
+
+        .skills {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .7rem
+        }
+
+        .skills li {
+            background: var(--bg2);
+            padding: .55rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 600;
+            border: 1px solid rgba(244, 242, 255, .12);
+            transition: transform .25s, background .25s, color .25s
+        }
+
+        .skills li:hover {
+            transform: translateY(-5px) rotate(-3deg);
+            background: var(--lemon);
+            color: #1B1640
+        }
+
+        .contact h2 {
+            text-align: center;
+            margin-bottom: 1.6rem
+        }
+
+        .contact>p {
+            text-align: center;
+            color: var(--muted);
+            margin: -.8rem auto 2rem;
+            max-width: 40ch
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+            gap: 1.3rem
+        }
+
+        .ct {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: .9rem;
+            padding: 2rem 1.2rem;
+            border-radius: 24px;
+            background: var(--bg2);
+            border: 1px solid rgba(244, 242, 255, .1);
+            text-decoration: none;
+            transition: transform .3s, box-shadow .3s
+        }
+
+        .ct:hover {
+            transform: translateY(-10px)
+        }
+
+        .ico {
+            width: 72px;
+            height: 72px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            transition: transform .4s cubic-bezier(.3, 1.6, .5, 1)
+        }
+
+        .ct:hover .ico {
+            transform: scale(1.18) rotate(-8deg)
+        }
+
+        .ico svg {
+            width: 38px;
+            height: 38px
+        }
+
+        .ct strong {
+            font-size: 1.2rem
+        }
+
+        .ct small {
+            color: var(--muted)
+        }
+
+        .mail .ico {
+            background: var(--lemon);
+            color: #1B1640
+        }
+
+        .mail:hover {
+            box-shadow: 0 14px 40px rgba(255, 228, 92, .3)
+        }
+
+        .wa .ico {
+            background: var(--wa);
+            color: #fff
+        }
+
+        .wa:hover {
+            box-shadow: 0 14px 40px rgba(37, 211, 102, .35)
+        }
+
+        .ig .ico {
+            background: linear-gradient(45deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5);
+            color: #fff
+        }
+
+        .ig:hover {
+            box-shadow: 0 14px 40px rgba(214, 41, 118, .4)
+        }
+
+        .fab {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--wa);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            z-index: 45;
+            animation: ping 2.2s infinite;
+            transition: transform .3s
+        }
+
+        .fab:hover {
+            transform: scale(1.12) rotate(-8deg)
+        }
+
+        .fab svg {
+            width: 32px;
+            height: 32px
+        }
+
+        @keyframes ping {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, .6)
+            }
+
+            80%,
+            100% {
+                box-shadow: 0 0 0 22px rgba(37, 211, 102, 0)
+            }
+        }
+
+        footer {
+            padding: 3rem 0 4rem;
+            color: var(--muted);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px
+        }
+
+        @media (hover:none) {
+            #glow {
+                display: none
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important
+            }
+
+            h1 .w i,
+            .lead,
+            .cta,
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="3" />
+            <path d="M2.5 6.5 12 13l9.5-6.5" />
+        </symbol>
+        <symbol id="i-wa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+                d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" />
+            <g transform="translate(7 7) scale(.42)">
+                <path
+                    d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"
+                    fill="currentColor" stroke-width="2.5" />
+            </g>
+        </symbol>
+        <symbol id="i-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="5.5" />
+            <circle cx="12" cy="12" r="4.2" />
+            <circle cx="17.4" cy="6.6" r="1" fill="currentColor" />
+        </symbol>
+    </svg>
+    <div id="bar"></div>
+    <div id="glow"></div>
+
+    <header>
+        <div class="wrap">
+
+            <a class="brand" href="#">
+                <span>Nischal Timsina</span>
+                <!-- Header Mascot: Single Eye Wink + Welcome Hand Wave -->
+                <svg class="cat-header" viewBox="0 0 300 300" fill="none">
+                    <path d="M 80,110 L 115,35 L 145,95 Z" fill="#7A42E6" />
+                    <path d="M 220,110 L 185,35 L 155,95 Z" fill="#D830DB" />
+                    <circle cx="150" cy="160" r="100" fill="url(#purpleGrad)" />
+                    <defs>
+                        <radialGradient id="purpleGrad" cx="30%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#C05CFF" />
+                            <stop offset="100%" stop-color="#8020E6" />
+                        </radialGradient>
+                    </defs>
+                    <!-- Left Eye (Open) -->
+                    <circle cx="115" cy="150" r="22" fill="#FFFFFF" />
+                    <circle cx="115" cy="150" r="11" fill="#100C2A" />
+                    <circle cx="119" cy="146" r="4" fill="#FFFFFF" />
+                    <!-- Right Eye (Winking One Eye) -->
+                    <g class="wink-eye">
+                        <circle cx="185" cy="150" r="22" fill="#FFFFFF" />
+                        <circle cx="185" cy="150" r="11" fill="#100C2A" />
+                        <circle cx="189" cy="146" r="4" fill="#FFFFFF" />
+                    </g>
+                    <ellipse cx="90" cy="175" rx="15" ry="9" fill="#E26DFF" opacity="0.6" />
+                    <ellipse cx="210" cy="175" rx="15" ry="9" fill="#E26DFF" opacity="0.6" />
+                    <path d="M 130,195 Q 150,212 170,195" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+                        fill="none" />
+                    <!-- Waving Welcome Paw/Hand -->
+                    <g class="wave-hand">
+                        <path d="M 230,200 Q 275,180 260,150" stroke="#8020E6" stroke-width="26" stroke-linecap="round"
+                            fill="none" />
+                        <circle cx="260" cy="150" r="16" fill="#C05CFF" />
+                    </g>
+                </svg>
+            </a>
+            <nav><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="wrap hero">
+            <div>
+                <h1><span class="w"><i>Designs</i></span> <span class="w"><i>that</i></span> <span
+                        class="w"><i>get</i></span> <span class="w"><i>you</i></span> <span class="w"><i
+                            class="hl">noticed.</i></span></h1>
+                <p class="lead">Graphics, animation and web pages for streamers, creators and small brands.</p>
+                <div class="cta"><a class="btn main mag" href="#work">See my work</a><a class="btn ghost mag"
+                        href="#contact">Hire me</a></div>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <section id="work" class="reveal">
+                <!-- Selected Work Section with Character Reaching and Pointing to Cards -->
+                <div class="work-header-container">
+                    <h2>Selected work</h2>
+                    <svg class="cat-work-mascot" viewBox="0 0 320 220" fill="none">
+                        <path d="M 60,70 L 95,5 L 125,55 Z" fill="#7A42E6" />
+                        <path d="M 200,70 L 165,5 L 135,55 Z" fill="#D830DB" />
+                        <circle cx="130" cy="120" r="85" fill="url(#workCatGrad)" />
+                        <defs>
+                            <radialGradient id="workCatGrad" cx="35%" cy="35%" r="70%">
+                                <stop offset="0%" stop-color="#C05CFF" />
+                                <stop offset="100%" stop-color="#8020E6" />
+                            </radialGradient>
+                        </defs>
+                        <!-- Blinking Eyes -->
+                        <g class="eye-blink">
+                            <circle cx="95" cy="110" r="18" fill="#FFFFFF" />
+                            <circle cx="165" cy="110" r="18" fill="#FFFFFF" />
+                            <g class="pupils">
+                                <circle cx="95" cy="110" r="9" fill="#100C2A" />
+                                <circle cx="165" cy="110" r="9" fill="#100C2A" />
+                                <circle cx="98" cy="107" r="3" fill="#FFFFFF" />
+                                <circle cx="168" cy="107" r="3" fill="#FFFFFF" />
+                            </g>
+                        </g>
+                        <ellipse cx="75" cy="132" rx="12" ry="7" fill="#E26DFF" opacity="0.6" />
+                        <ellipse cx="185" cy="132" rx="12" ry="7" fill="#E26DFF" opacity="0.6" />
+                        <path d="M 110,148 Q 130,162 150,148" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"
+                            fill="none" />
+                        <!-- Arm / Hand Reaching and Pointing Down to Work Cards -->
+                        <g class="reaching-arm">
+                            <path d="M 195,150 Q 250,165 285,185" stroke="#8020E6" stroke-width="22"
+                                stroke-linecap="round" fill="none" />
+                            <circle cx="285" cy="185" r="14" fill="#FFE45C" />
+                            <!-- Pointing Finger -->
+                            <path d="M 285,185 L 305,200" stroke="#FFE45C" stroke-width="8" stroke-linecap="round" />
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="grid">
+                    <article class="card tilt">
+                        <div class="cover c1"><b></b><b></b><b></b></div>
+                        <div class="text">
+                            <h3>Channel graphics</h3>
+                            <p>Banners, panels and overlays for a streaming channel.</p>
+                        </div>
+                    </article>
+                    <article class="card tilt">
+                        <div class="cover c2"><b></b><b></b><b></b></div>
+                        <div class="text">
+                            <h3>Verification page animation</h3>
+                            <p>Animated one-time-code page for a web app.</p>
+                        </div>
+                    </article>
+                    <article class="card tilt">
+                        <div class="cover c3"><b></b><b></b><b></b><b></b><b></b></div>
+                        <div class="text">
+                            <h3>Logo and brand set</h3>
+                            <p>Logo, colors and social media templates.</p>
+                        </div>
+                    </article>
+                    <article class="card tilt">
+                        <div class="cover c4"><b></b></div>
+                        <div class="text">
+                            <h3>Landing page</h3>
+                            <p>A simple, fast page that works on phones.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="about" class="reveal">
+                <h2>About</h2>
+                <div class="about">
+                    <p>I make clean, eye-catching visuals and web pages for people who want to stand out online. Send me
+                        what you need and I will reply with a clear price and timeline.</p>
+                    <ul class="skills">
+                        <li>Graphic design</li>
+                        <li>Animation</li>
+                        <li>Web pages</li>
+                        <li>Channel branding</li>
+                        <li>Logos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="contact" class="contact reveal">
+                <h2>Let's work together</h2>
+                <p>Pick the way that is easiest for you. I reply fast.</p>
+                <div class="cards">
+                    <a class="ct mail" href="mailto:nischaltimsina40@gmail.com"><span class="ico"><svg>
+                                <use href="#i-mail" />
+                            </svg></span><strong>Email</strong><small>nischaltimsina40@gmail.com</small></a>
+                    <a class="ct wa" href="+9779819346027" target="_blank" rel="noopener"><span class="ico"><svg>
+                                <use href="#i-wa" />
+                            </svg></span><strong>WhatsApp</strong><small>Chat with me</small></a>
+                    <a class="ct ig" href="https://www.instagram.com/nischal.timsinaa/" target="_blank"
+                        rel="noopener"><span class="ico"><svg>
+                                <use href="#i-ig" />
+                            </svg></span><strong>Instagram</strong><small>Nischal Timsina</small></a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Footer Mascot Waving Bye -->
+        <div class="footer-cat-wrap">
+            <svg class="cat-footer" viewBox="0 0 300 280" fill="none">
+                <path d="M 80,110 L 115,35 L 145,95 Z" fill="#7A42E6" />
+                <path d="M 220,110 L 185,35 L 155,95 Z" fill="#D830DB" />
+                <circle cx="150" cy="160" r="100" fill="url(#footerPurpleGrad)" />
+                <defs>
+                    <radialGradient id="footerPurpleGrad" cx="30%" cy="30%" r="70%">
+                        <stop offset="0%" stop-color="#C05CFF" />
+                        <stop offset="100%" stop-color="#8020E6" />
+                    </radialGradient>
+                </defs>
+                <!-- Happy Eyes -->
+                <path d="M 100,145 Q 115,130 130,145" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+                    fill="none" />
+                <path d="M 170,145 Q 185,130 200,145" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+                    fill="none" />
+                <ellipse cx="90" cy="165" rx="15" ry="9" fill="#E26DFF" opacity="0.6" />
+                <ellipse cx="210" cy="165" rx="15" ry="9" fill="#E26DFF" opacity="0.6" />
+                <path d="M 130,185 Q 150,202 170,185" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+                    fill="none" />
+                <!-- Bye Waving Arm -->
+                <g class="bye-arm">
+                    <path d="M 60,180 Q 20,120 40,80" stroke="#8020E6" stroke-width="24" stroke-linecap="round"
+                        fill="none" />
+                    <circle cx="40" cy="80" r="16" fill="#C05CFF" />
+                </g>
+            </svg>
+        </div>
+        &copy; 2026 NISCHAL TIMSINA
+    </footer>
+
+    <a class="fab" href="https://wa.me/9779819346027" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg>
+            <use href="#i-wa" />
+        </svg></a>
+
+    <script>
+        (function () {
+            var bar = document.getElementById('bar'), glow = document.getElementById('glow');
+            addEventListener('scroll', function () { var h = document.documentElement; bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%' }, { passive: true });
+            addEventListener('mousemove', function (e) { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px' });
+            var io = new IntersectionObserver(function (a) { a.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('on'); io.unobserve(x.target) } }) }, { threshold: .12 });
+            document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el) });
+            document.querySelectorAll('.tilt').forEach(function (c) {
+                c.addEventListener('mousemove', function (e) {
+                    var r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+                    c.style.transform = 'perspective(800px) rotateY(' + x * 10 + 'deg) rotateX(' + (-y * 10) + 'deg) translateY(-6px)'
+                });
+                c.addEventListener('mouseleave', function () { c.style.transform = '' });
+            });
+            document.querySelectorAll('.mag').forEach(function (b) {
+                b.addEventListener('mousemove', function (e) { var r = b.getBoundingClientRect(); b.style.transform = 'translate(' + (e.clientX - r.left - r.width / 2) * .2 + 'px,' + (e.clientY - r.top - r.height / 2) * .3 + 'px)' });
+                b.addEventListener('mouseleave', function () { b.style.transform = '' });
+            });
+        })();
+    </script>
+</body>
+
+</html>
