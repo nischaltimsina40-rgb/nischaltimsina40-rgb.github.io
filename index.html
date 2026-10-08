@@ -724,6 +724,39 @@ header.hide{transform:translateY(-100%)}
 @keyframes d-wh{0%,18%{opacity:0;transform:translateY(6px)}22%,30%{opacity:1;transform:translateY(0)}34%,100%{opacity:0}}
 @keyframes d-bp{0%,62%{opacity:0;transform:translateY(8px)}66%,74%{opacity:1;transform:translateY(0)}78%,100%{opacity:0}}
 @keyframes d-cf{0%,59%{opacity:0;transform:translate(0,0) scale(.3)}61%{opacity:1}72%{opacity:0;transform:translate(var(--x),var(--y)) scale(1)}100%{opacity:0}}
+    .cover.shot{display:block;position:relative;aspect-ratio:16/10;background:#0B0A16}
+.cover.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media (min-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:759px){.grid{grid-template-columns:minmax(0,1fr)}}
+    
+/* ---- Project viewer ---- */
+.hint{color:var(--muted);margin:-.6rem 0 1.4rem}
+.card.viewable{cursor:pointer}
+.view{position:absolute;right:12px;bottom:12px;background:var(--lemon);color:#1B1640;padding:.45rem .95rem;border-radius:999px;font-weight:700;font-size:.9rem;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:2}
+.card.viewable:hover .view,.card.viewable:focus-visible .view{opacity:1;transform:none}
+@media (hover:none){.view{opacity:1;transform:none}}
+@media (min-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:759px){.grid{grid-template-columns:minmax(0,1fr)}}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(10,8,30,.97);display:flex;flex-direction:column;gap:.75rem;padding:.75rem;animation:lbIn .3s ease}
+.lb[hidden]{display:none}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+.lb-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;color:#fff}
+.lb-bar h3{font-size:1.15rem;margin-right:auto;padding-left:.4rem}
+.lb-b{background:rgba(244,242,255,.14);color:#fff;border:0;border-radius:999px;padding:.55rem 1.05rem;font:600 .9rem var(--font);cursor:pointer;text-decoration:none;transition:background .2s,color .2s,transform .2s}
+.lb-b:hover,.lb-b.on{background:var(--lemon);color:#1B1640}
+.lb-b[hidden]{display:none}
+.lb-x{width:42px;height:42px;padding:0;font-size:1.6rem;line-height:1}
+.lb-x:hover{background:var(--coral);color:#fff}
+.lb-stage{flex:1;min-height:0;display:flex;justify-content:center;animation:lbPop .35s cubic-bezier(.2,.9,.2,1)}
+@keyframes lbPop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+.lb-frame{width:100%;height:100%;border:0;border-radius:14px;background:#fff;transition:width .35s ease}
+.lb-frame[hidden]{display:none}
+.lb-stage.phone .lb-frame{width:390px;max-width:100%}
+.lb-msg{margin:auto;max-width:440px;text-align:center;color:#fff;font-size:1.15rem}
+.lb-msg[hidden]{display:none}
+.lb-msg p{margin-bottom:1.3rem;color:var(--muted)}
+.lb-msg a{display:inline-block;background:var(--lemon);color:#1B1640;padding:.8rem 1.5rem;border-radius:999px;font-weight:700;text-decoration:none}
+@media (max-width:760px){.lb-dev{display:none}}
     </style>
 </head>
 
@@ -809,7 +842,7 @@ header.hide{transform:translateY(-100%)}
         <div class="wrap">
             <section id="work" class="reveal">
                 <div class="work-header-container">
-                    <h2>Selected work</h2>
+                    <h2>My Work</h2>
                     <svg class="cat-work-mascot" viewBox="0 0 320 220" fill="none">
                         <path d="M 60,70 L 95,5 L 125,55 Z" fill="#7A42E6" />
                         <path d="M 200,70 L 165,5 L 135,55 Z" fill="#D830DB" />
@@ -843,17 +876,18 @@ header.hide{transform:translateY(-100%)}
                     </svg>
                 </div>
 
+                <p class="hint">Click a project to open it and try it yourself.</p>
                 <div class="grid">
                     <!-- EDIT: to show a real screenshot, replace the animated <b></b> shapes inside .cover with <img src="your-screenshot.jpg" alt="describe it"> -->
-                    <article class="card tilt">
-                        <div class="cover cv-web"><div class="win"><div class="tb"><i></i><i></i><i></i></div><div class="pg"><div class="nv"><i></i><i></i><i></i><i></i></div><div class="hr"><i class="t1"></i><i class="t2"></i><i class="bt"></i></div><div class="rw"><i></i><i></i><i></i></div><div class="bl"></div><div class="rw"><i></i><i></i><i></i></div></div></div></div>
+                    <article class="card tilt viewable" tabindex="0" role="button" aria-label="View Business website" data-title="Business website" data-open="business-website/index.html" data-drive="">
+                        <div class="cover cv-web"><div class="win"><div class="tb"><i></i><i></i><i></i></div><div class="pg"><div class="nv"><i></i><i></i><i></i><i></i></div><div class="hr"><i class="t1"></i><i class="t2"></i><i class="bt"></i></div><div class="rw"><i></i><i></i><i></i></div><div class="bl"></div><div class="rw"><i></i><i></i><i></i></div></div></div><span class="view">View project</span></div>
                         <div class="text">
                             <h3>Business website</h3>
                             <p>A website for a photo and video studio, with services, portfolio and contact details.</p>
                         </div>
                     </article>
-                    <article class="card tilt">
-                        <div class="cover cv-login"><div class="lgn"><div class="av"></div><div class="fl"><i class="tx"></i></div><div class="fl"><i class="dt"></i></div><div class="sb"><span class="si">Sign in</span><span class="ck">&#10003;</span></div></div></div>
+                    <article class="card tilt viewable" tabindex="0" role="button" aria-label="View Login page" data-title="Login page" data-open="login-page/index.html" data-drive="">
+                        <div class="cover cv-login"><div class="lgn"><div class="av"></div><div class="fl"><i class="tx"></i></div><div class="fl"><i class="dt"></i></div><div class="sb"><span class="si">Sign in</span><span class="ck">&#10003;</span></div></div><span class="view">View project</span></div>
                         <div class="text">
                             <h3>Login page</h3>
                             <p>A login page and sign-in flow for clients, built to work on phones.</p>
@@ -955,12 +989,80 @@ header.hide{transform:translateY(-100%)}
         <svg><use href="#i-wa" /></svg>
     </a>
 
+    <div id="lb" class="lb" hidden role="dialog" aria-modal="true" aria-label="Project viewer">
+        <div class="lb-bar">
+            <h3 id="lb-title"></h3>
+            <button class="lb-b lb-dev on" id="lb-desk">Desktop</button>
+            <button class="lb-b lb-dev" id="lb-phone">Phone</button>
+            <a class="lb-b" id="lb-tab" href="#" target="_blank" rel="noopener" hidden>Open in new tab &#8599;</a>
+            <a class="lb-b" id="lb-drive" href="#" target="_blank" rel="noopener" hidden>Google Drive &#8599;</a>
+            <button class="lb-b lb-x" id="lb-x" aria-label="Close">&times;</button>
+        </div>
+        <div class="lb-stage" id="lb-stage">
+            <iframe class="lb-frame" id="lb-frame" title="Project preview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" hidden></iframe>
+            <div class="lb-msg" id="lb-msg" hidden><p id="lb-msgtxt"></p><a id="lb-msgbtn" href="#" target="_blank" rel="noopener"></a></div>
+        </div>
+    </div>
     <script>
         window.addEventListener('scroll', () => {
             const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (window.scrollY / totalScroll) * 100;
             document.getElementById('bar').style.width = scrollPercent + '%';
         });
+
+
+        // ---- Project viewer ----
+        (function () {
+            const $ = id => document.getElementById(id);
+            const lb = $('lb'), frame = $('lb-frame'), msg = $('lb-msg'), stage = $('lb-stage');
+            let opener = null;
+            function exists(path) {
+                if (location.protocol === 'file:') return Promise.resolve(true);
+                return fetch(path, { method: 'HEAD' }).then(r => r.ok).catch(() => false);
+            }
+            function showMsg(text, label, href) {
+                frame.hidden = true; frame.removeAttribute('src');
+                $('lb-msgtxt').textContent = text;
+                const b = $('lb-msgbtn'); b.textContent = label; b.href = href;
+                msg.hidden = false;
+            }
+            function setDevice(phone) {
+                stage.classList.toggle('phone', phone);
+                $('lb-desk').classList.toggle('on', !phone);
+                $('lb-phone').classList.toggle('on', phone);
+            }
+            function open(card) {
+                opener = card;
+                const path = card.dataset.open, drive = card.dataset.drive;
+                $('lb-title').textContent = card.dataset.title;
+                $('lb-tab').hidden = !path; if (path) $('lb-tab').href = path;
+                $('lb-drive').hidden = !drive; if (drive) $('lb-drive').href = drive;
+                setDevice(false); msg.hidden = true; frame.hidden = true;
+                lb.hidden = false; document.body.style.overflow = 'hidden';
+                $('lb-x').focus();
+                const wa = document.querySelector('.ct.wa');
+                const contact = () => showMsg('The live preview of this project is coming soon. Message me and I will show it to you.', 'Message me on WhatsApp', wa ? wa.href : '#contact');
+                const driveMsg = () => showMsg('This project is shared on Google Drive.', 'Open on Google Drive', drive);
+                if (!path) { drive ? driveMsg() : contact(); return; }
+                exists(path).then(ok => {
+                    if (lb.hidden) return;
+                    if (ok) { frame.src = path; frame.hidden = false; }
+                    else { $('lb-tab').hidden = true; drive ? driveMsg() : contact(); }
+                });
+            }
+            function close() {
+                lb.hidden = true; frame.removeAttribute('src'); document.body.style.overflow = '';
+                if (opener) opener.focus();
+            }
+            document.querySelectorAll('.viewable').forEach(c => {
+                c.addEventListener('click', () => open(c));
+                c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(c); } });
+            });
+            $('lb-x').addEventListener('click', close);
+            $('lb-desk').addEventListener('click', () => setDevice(false));
+            $('lb-phone').addEventListener('click', () => setDevice(true));
+            document.addEventListener('keydown', e => { if (!lb.hidden && e.key === 'Escape') close(); });
+        })();
 
         const hdr = document.querySelector('header');
         let lastY = window.scrollY;
