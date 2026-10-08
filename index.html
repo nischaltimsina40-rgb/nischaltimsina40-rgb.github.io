@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NISCHAL TIMSINA | Graphics, animation and web design</title>
-    <meta name="description" content="Portfolio of graphics, animation and web design work.">
+    <title>NISCHAL TIMSINA | Front-end developer</title>
+    <meta name="description" content="Front-end developer building fast, animated websites and login pages.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -612,6 +612,118 @@
                 transform: none !important
             }
         }
+    
+/* ---- Project covers: mini animated mockups ---- */
+.cv-web{background:linear-gradient(135deg,#2B35F5,#36E1FF)}
+.cv-login{background:linear-gradient(135deg,#FF5C7A,#6B4DFF)}
+.cv-video{background:linear-gradient(135deg,#0E1230,#2A1B6B)}
+.cv-soc{background:linear-gradient(135deg,#FFE45C,#FF5C7A)}
+.win,.lgn,.vd,.soc{font-size:0}
+.win i,.lgn i,.vd i,.soc i{display:block}
+.win{width:80%;height:82%;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.win .tb{height:20px;background:#E9E7FA;display:flex;align-items:center;gap:5px;padding:0 9px}
+.win .tb i{width:7px;height:7px;border-radius:50%;background:#FF5C7A}
+.win .tb i:nth-child(2){background:#FFE45C}.win .tb i:nth-child(3){background:#5BE3B0}
+.win .pg{animation:m-scroll 8s ease-in-out infinite}
+.win .nv{display:flex;gap:6px;padding:9px 10px;align-items:center}
+.win .nv i{height:6px;width:15%;border-radius:4px;background:#D9D6F5}
+.win .nv i:first-child{width:24%;background:#2B35F5;margin-right:auto}
+.win .hr{margin:4px 10px;padding:14px 12px;border-radius:10px;background:linear-gradient(120deg,#2B35F5,#FF5C7A)}
+.win .t1{height:10px;width:70%;background:#fff;border-radius:5px}
+.win .t2{height:6px;width:46%;background:rgba(255,255,255,.7);border-radius:4px;margin-top:7px}
+.win .bt{height:13px;width:28%;background:#FFE45C;border-radius:8px;margin-top:11px;animation:m-bp 1.8s ease-in-out infinite}
+.win .rw{display:flex;gap:6px;margin:9px 10px}
+.win .rw i{flex:1;height:36px;border-radius:8px;background:#EDEBFC}
+.win .bl{margin:0 10px 9px;height:44px;border-radius:10px;background:linear-gradient(90deg,#EDEBFC,#fff,#EDEBFC);background-size:200% 100%;animation:m-sh 2s linear infinite}
+@keyframes m-scroll{0%,15%{transform:translateY(0)}50%,65%{transform:translateY(-30%)}100%{transform:translateY(0)}}
+@keyframes m-bp{50%{transform:scale(1.18)}}
+@keyframes m-sh{to{background-position:-200% 0}}
+
+.lgn{width:62%;background:#fff;border-radius:16px;padding:16px 16px 18px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.lgn .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FF5C7A,#FFE45C);margin:0 auto 12px}
+.lgn .fl{height:24px;border-radius:8px;background:#EDEBFC;margin-bottom:9px;padding:0 9px;display:flex;align-items:center}
+.lgn .tx{height:7px;width:0;border-radius:4px;background:#14104A;animation:m-type 6s steps(10) infinite}
+.lgn .dt{height:10px;width:0;overflow:hidden;background:radial-gradient(circle,#14104A 3px,transparent 3.5px) 0 0/10px 10px repeat-x;animation:m-dots 6s steps(7) infinite}
+.lgn .sb{position:relative;height:26px;border-radius:9px;background:#6B4DFF;margin-top:12px;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700;animation:m-press 6s infinite}
+.lgn .sb span{position:absolute}
+.lgn .si{animation:m-si 6s infinite}.lgn .ck{opacity:0;animation:m-ck 6s infinite;font-size:15px}
+@keyframes m-type{0%,8%{width:0}30%,92%{width:62%}100%{width:0}}
+@keyframes m-dots{0%,32%{width:0}52%,92%{width:70px}100%{width:0}}
+@keyframes m-press{0%,60%{background:#6B4DFF;transform:none}63%{transform:scale(.93)}67%{transform:none}70%,92%{background:#25D366}100%{background:#6B4DFF}}
+@keyframes m-si{0%,68%{opacity:1}72%,92%{opacity:0}96%,100%{opacity:1}}
+@keyframes m-ck{0%,68%{opacity:0;transform:scale(.3)}74%,92%{opacity:1;transform:scale(1)}96%,100%{opacity:0}}
+
+.vd{width:78%}
+.vd .pv{aspect-ratio:16/9;border-radius:10px;background:linear-gradient(135deg,#FF5C7A,#6B4DFF);display:grid;place-items:center;margin-bottom:12px}
+.vd .pl{width:0;height:0;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;animation:m-pl 1.6s ease-in-out infinite}
+.vd .tl{position:relative;padding:4px 0}
+.vd .tk{display:flex;gap:3px;margin-bottom:6px}
+.vd .tk i{height:15px;border-radius:4px;background:#36E1FF}
+.vd .tk i:nth-child(2){background:#FFE45C}.vd .tk i:nth-child(3){background:#FF5C7A}
+.vd .ph{position:absolute;top:-2px;bottom:-2px;left:0;width:2px;background:#fff;border-radius:2px;animation:m-ph 5s linear infinite}
+.vd .ph::before{content:"";position:absolute;top:-3px;left:-4px;width:10px;height:10px;border-radius:50%;background:#fff}
+@keyframes m-pl{50%{transform:scale(1.25)}}
+@keyframes m-ph{from{left:0}to{left:100%}}
+
+.soc{width:84%;height:84%;display:flex;gap:10px;align-items:center;justify-content:center}
+.soc .pc{position:relative;border-radius:12px;box-shadow:0 14px 30px rgba(0,0,0,.3);overflow:hidden;animation:m-fl 3.6s ease-in-out infinite}
+.soc .p1{width:28%;aspect-ratio:9/16;background:linear-gradient(160deg,#6B4DFF,#36E1FF)}
+.soc .p2{width:36%;aspect-ratio:1;background:#14104A;animation-delay:-1.2s}
+.soc .p3{width:28%;aspect-ratio:9/16;background:linear-gradient(160deg,#FF5C7A,#2B35F5);animation-delay:-2.4s}
+.soc .ci{position:absolute;top:10%;left:12%;width:22%;aspect-ratio:1;border-radius:50%;background:#FFE45C}
+.soc .ln{position:absolute;left:12%;bottom:14%;height:6px;width:60%;border-radius:4px;background:rgba(255,255,255,.9)}
+.soc .ln.s{bottom:7%;width:38%;background:rgba(255,255,255,.55)}
+.soc .hp{position:absolute;inset:0;display:grid;place-items:center;font-size:30px;color:#FF5C7A;animation:m-pop 3.6s ease-in-out infinite;animation-delay:-1.2s}
+@keyframes m-fl{50%{transform:translateY(-12px) rotate(-2deg)}}
+@keyframes m-pop{0%,55%{transform:scale(0)}65%{transform:scale(1.4)}75%,100%{transform:scale(1)}}
+    
+/* ---- Header hides on scroll down, shows on scroll up ---- */
+header{transition:transform .35s ease}
+header.hide{transform:translateY(-100%)}
+
+/* ---- Funny delete-button animation card ---- */
+.card.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:center}
+.card.wide .text{padding:1.6rem 2rem}
+.card.wide .text h3{font-size:1.6rem}
+.card.wide .text p{font-size:1.1rem}
+@media (max-width:760px){.card.wide{display:block}.card.wide .text{padding:1.2rem 1.4rem 1.5rem}}
+.cv-del{background:linear-gradient(135deg,#FFE45C,#FFB347)}
+.del{width:100%;height:100%;display:block}
+.del *{transform-box:fill-box}
+.del text{font-family:inherit;font-weight:800;fill:#14104A}
+.del .cat{animation:d-cat 7s infinite;transform-origin:50% 50%}
+.del .pu{animation:d-pu 7s infinite}
+.del .lid{transform-origin:100% 100%;animation:d-lid 7s infinite}
+.del .binw{animation:d-shake 7s infinite}
+.del .btn-r{animation:d-fill 7s infinite;transform-origin:50% 50%}
+.del .btn-g{animation:d-press 7s infinite;transform-origin:50% 50%}
+.del .t-del{animation:d-t1 7s infinite;fill:#fff}
+.del .t-ok{animation:d-t2 7s infinite;fill:#fff;opacity:0}
+.del .cur{animation:d-cur 7s infinite;opacity:0}
+.del .wh{animation:d-wh 7s infinite;opacity:0}
+.del .bp{animation:d-bp 7s infinite;opacity:0}
+.del .cf{opacity:0;animation:d-cf 7s infinite}
+@keyframes d-cat{
+0%,12%{transform:translate(-50px,162px) rotate(0);opacity:1}
+30%{transform:translate(170px,162px) rotate(-14deg)}
+34%{transform:translate(180px,162px) rotate(6deg)}
+38%{transform:translate(178px,164px) scale(1.1,.85)}
+41%{transform:translate(178px,166px) scale(1.18,.78)}
+52%{transform:translate(240px,64px) rotate(360deg) scale(1)}
+58%{transform:translate(252px,128px) rotate(540deg) scale(.7);opacity:1}
+59%,99%{transform:translate(252px,128px) scale(.7);opacity:0}
+100%{transform:translate(-50px,162px);opacity:0}}
+@keyframes d-pu{0%,26%{transform:translate(0,0)}30%,42%{transform:translate(2px,0)}100%{transform:translate(0,0)}}
+@keyframes d-lid{0%,10%{transform:rotate(0)}14%,56%{transform:rotate(78deg)}58%{transform:rotate(-6deg)}61%,100%{transform:rotate(0)}}
+@keyframes d-shake{0%,58%{transform:translateX(0)}60%{transform:translateX(-3px)}62%{transform:translateX(3px)}64%{transform:translateX(-2px)}66%,100%{transform:translateX(0)}}
+@keyframes d-fill{0%,60%{fill:#FF4D6D}62%,92%{fill:#25D366}96%,100%{fill:#FF4D6D}}
+@keyframes d-press{0%,8%{transform:scale(1)}10%{transform:scale(.93)}13%,100%{transform:scale(1)}}
+@keyframes d-t1{0%,60%{opacity:1}62%,92%{opacity:0}96%,100%{opacity:1}}
+@keyframes d-t2{0%,60%{opacity:0;transform:scale(.4)}64%,92%{opacity:1;transform:scale(1)}96%,100%{opacity:0}}
+@keyframes d-cur{0%{opacity:0;transform:translate(270px,240px)}3%{opacity:1}8%{transform:translate(188px,214px)}10%{transform:translate(188px,214px) scale(.85)}13%{transform:translate(188px,214px) scale(1)}17%,100%{opacity:0;transform:translate(188px,214px)}}
+@keyframes d-wh{0%,18%{opacity:0;transform:translateY(6px)}22%,30%{opacity:1;transform:translateY(0)}34%,100%{opacity:0}}
+@keyframes d-bp{0%,62%{opacity:0;transform:translateY(8px)}66%,74%{opacity:1;transform:translateY(0)}78%,100%{opacity:0}}
+@keyframes d-cf{0%,59%{opacity:0;transform:translate(0,0) scale(.3)}61%{opacity:1}72%{opacity:0;transform:translate(var(--x),var(--y)) scale(1)}100%{opacity:0}}
     </style>
 </head>
 
@@ -685,10 +797,10 @@
         <div class="blob b2"></div>
         <div class="wrap hero">
             <div>
-                <h1><span class="w"><i>Designs</i></span> <span class="w"><i>that</i></span> <span
+                <h1><span class="w"><i>Websites</i></span> <span class="w"><i>that</i></span> <span
                         class="w"><i>get</i></span> <span class="w"><i>you</i></span> <span class="w"><i
                             class="hl">noticed.</i></span></h1>
-                <p class="lead">Graphics, animation and web pages for streamers, creators and small brands.</p>
+                <p class="lead">Front-end developer building fast, animated websites and login pages for small businesses and brands.</p>
                 <div class="cta"><a class="btn main mag" href="#work">See my work</a><a class="btn ghost mag"
                         href="#contact">Hire me</a></div>
             </div>
@@ -732,32 +844,53 @@
                 </div>
 
                 <div class="grid">
+                    <!-- EDIT: to show a real screenshot, replace the animated <b></b> shapes inside .cover with <img src="your-screenshot.jpg" alt="describe it"> -->
                     <article class="card tilt">
-                        <div class="cover c1"><b></b><b></b><b></b></div>
+                        <div class="cover cv-web"><div class="win"><div class="tb"><i></i><i></i><i></i></div><div class="pg"><div class="nv"><i></i><i></i><i></i><i></i></div><div class="hr"><i class="t1"></i><i class="t2"></i><i class="bt"></i></div><div class="rw"><i></i><i></i><i></i></div><div class="bl"></div><div class="rw"><i></i><i></i><i></i></div></div></div></div>
                         <div class="text">
-                            <h3>Channel graphics</h3>
-                            <p>Banners, panels and overlays for a streaming channel.</p>
+                            <h3>Business website</h3>
+                            <p>A website for a photo and video studio, with services, portfolio and contact details.</p>
                         </div>
                     </article>
                     <article class="card tilt">
-                        <div class="cover c2"><b></b><b></b><b></b></div>
+                        <div class="cover cv-login"><div class="lgn"><div class="av"></div><div class="fl"><i class="tx"></i></div><div class="fl"><i class="dt"></i></div><div class="sb"><span class="si">Sign in</span><span class="ck">&#10003;</span></div></div></div>
                         <div class="text">
-                            <h3>Verification page animation</h3>
-                            <p>Animated one-time-code page for a web app.</p>
+                            <h3>Login page</h3>
+                            <p>A login page and sign-in flow for clients, built to work on phones.</p>
                         </div>
                     </article>
-                    <article class="card tilt">
-                        <div class="cover c3"><b></b><b></b><b></b><b></b><b></b></div>
+                    <article class="card wide tilt">
+                        <div class="cover cv-del"><svg class="del" viewBox="0 0 320 240" role="img" aria-label="Animation: a funny cat slides in and jumps into a bin when Delete is clicked">
+<defs><radialGradient id="uiCat" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#C05CFF"/><stop offset="1" stop-color="#8020E6"/></radialGradient></defs>
+<line x1="0" y1="187" x2="320" y2="187" stroke="#14104A" stroke-opacity=".2" stroke-width="3"/>
+<text class="wh" x="70" y="118" font-size="15">wheee!</text>
+<g class="cat">
+  <path d="M-20 -12 L-15 -35 L-3 -21 Z" fill="#7A42E6"/><path d="M20 -12 L15 -35 L3 -21 Z" fill="#D830DB"/>
+  <circle r="24" fill="url(#uiCat)"/>
+  <circle cx="-9" cy="-3" r="6.5" fill="#fff"/><circle cx="9" cy="-3" r="6.5" fill="#fff"/>
+  <g class="pu"><circle cx="-9" cy="-3" r="3.2" fill="#14104A"/><circle cx="9" cy="-3" r="3.2" fill="#14104A"/></g>
+  <ellipse cx="-16" cy="7" rx="4" ry="2.5" fill="#E26DFF" opacity=".6"/><ellipse cx="16" cy="7" rx="4" ry="2.5" fill="#E26DFF" opacity=".6"/>
+  <path d="M-6 9 Q0 15 6 9" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</g>
+<g class="binw">
+  <path d="M222 108 L288 108 L282 186 L228 186 Z" fill="#E7E5FF"/>
+  <path d="M240 118 L242 176 M255 118 L255 176 M270 118 L268 176" stroke="#B9B3F0" stroke-width="5" stroke-linecap="round"/>
+  <g class="lid"><rect x="212" y="96" width="86" height="12" rx="6" fill="#C9C4F5"/><rect x="241" y="89" width="28" height="9" rx="4.5" fill="#B9B3F0"/></g>
+</g>
+<text class="bp" x="233" y="72" font-size="15">burp!</text>
+<g transform="translate(255 98)">
+  <circle class="cf" r="4" fill="#FF4D6D" style="--x:-46px;--y:-40px"/><circle class="cf" r="3.5" fill="#6B4DFF" style="--x:-18px;--y:-62px"/>
+  <circle class="cf" r="4" fill="#25D366" style="--x:16px;--y:-60px"/><circle class="cf" r="3.5" fill="#fff" style="--x:46px;--y:-38px"/>
+  <circle class="cf" r="3" fill="#14104A" style="--x:-60px;--y:-12px"/><circle class="cf" r="3" fill="#FF4D6D" style="--x:62px;--y:-10px"/>
+</g>
+<g class="btn-g"><rect class="btn-r" x="100" y="198" width="120" height="34" rx="17" fill="#FF4D6D"/>
+  <text class="t-del" x="160" y="220" font-size="15" text-anchor="middle">Delete</text>
+  <text class="t-ok" x="160" y="220" font-size="15" text-anchor="middle">Deleted &#10003;</text></g>
+<path class="cur" d="M0 0 L0 17 L5 13 L9 21 L12 19 L8 12 L14 12 Z" fill="#fff" stroke="#14104A" stroke-width="1.5" stroke-linejoin="round"/>
+</svg></div>
                         <div class="text">
-                            <h3>Logo and brand set</h3>
-                            <p>Logo, colors and social media templates.</p>
-                        </div>
-                    </article>
-                    <article class="card tilt">
-                        <div class="cover c4"><b></b></div>
-                        <div class="text">
-                            <h3>Landing page</h3>
-                            <p>A simple, fast page that works on phones.</p>
+                            <h3>UI animations</h3>
+                            <p>Playful micro-interactions that make a page feel alive. This delete button is one example: click it and a cat slides into the bin.</p>
                         </div>
                     </article>
                 </div>
@@ -766,14 +899,12 @@
             <section id="about" class="reveal">
                 <h2>About</h2>
                 <div class="about">
-                    <p>I make clean, eye-catching visuals and web pages for people who want to stand out online. Send me
-                        what you need and I will reply with a clear price and timeline.</p>
+                    <p>I am a front-end developer. I build clean, fast, mobile-friendly websites and login pages with smooth animations. Tell me what you need and I will reply with a clear price and timeline.</p>
                     <ul class="skills">
-                        <li>Graphic design</li>
-                        <li>Animation</li>
-                        <li>Web pages</li>
-                        <li>Channel branding</li>
-                        <li>Logos</li>
+                        <li>Front-end development</li>
+                        <li>Responsive websites</li>
+                        <li>Login pages</li>
+                        <li>UI animations</li>
                     </ul>
                 </div>
             </section>
@@ -830,6 +961,16 @@
             const scrollPercent = (window.scrollY / totalScroll) * 100;
             document.getElementById('bar').style.width = scrollPercent + '%';
         });
+
+        const hdr = document.querySelector('header');
+        let lastY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            if (y > lastY && y > 80) { hdr.classList.add('hide'); }
+            else if (y < lastY || y <= 80) { hdr.classList.remove('hide'); }
+            lastY = y;
+        }, { passive: true });
+        hdr.addEventListener('focusin', () => hdr.classList.remove('hide'));
 
         const glow = document.getElementById('glow');
         window.addEventListener('mousemove', (e) => {
