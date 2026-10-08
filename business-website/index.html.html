@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yamn Digital Studio — Photo & Video, Damak</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600&display=swap">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --bg2: #121217;
+            --fg: #f4f1ea;
+            --mut: #8d8d98;
+            --ac: #ff3b30;
+            --ac2: #ffc247;
+            --line: #26262e;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            --h: 'Bebas Neue', Impact, sans-serif;
+            --b: 'Space Grotesk', system-ui, sans-serif
+        }
+
+        @media (prefers-color-scheme:light) {
+            :root:not([data-theme="dark"]) {
+                --bg: #f3efe7;
+                --bg2: #fff;
+                --fg: #14141a;
+                --mut: #5d5d68;
+                --line: #d9d3c7
+            }
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f3efe7;
+            --bg2: #fff;
+            --fg: #14141a;
+            --mut: #5d5d68;
+            --line: #d9d3c7
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px);
+            scroll-behavior: smooth
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font: 16px/1.6 var(--b);
+            overflow-x: hidden
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--h);
+            letter-spacing: .04em;
+            font-weight: 400;
+            line-height: 1;
+            margin: 0 0 .4em
+        }
+
+        body:after {
+            content: "";
+            position: fixed;
+            inset: -50%;
+            pointer-events: none;
+            opacity: .07;
+            z-index: 50;
+            background: repeating-radial-gradient(circle at 30% 20%, #fff 0 1px, transparent 1px 3px);
+            animation: grain .5s steps(4) infinite
+        }
+
+        @keyframes grain {
+            25% {
+                transform: translate(-3%, 2%)
+            }
+
+            50% {
+                transform: translate(2%, -3%)
+            }
+
+            75% {
+                transform: translate(-2%, -1%)
+            }
+        }
+
+        #flash {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 99;
+            pointer-events: none;
+            animation: flash 1s ease-out forwards
+        }
+
+        #flash.go {
+            animation: none;
+            opacity: .9;
+            transition: none
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 1
+            }
+
+            100% {
+                opacity: 0
+            }
+        }
+
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 20;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line)
+        }
+
+        nav {
+            max-width: 1100px;
+            margin: auto;
+            padding: 10px 20px;
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 14px
+        }
+
+        .logo {
+            font: 26px var(--h);
+            letter-spacing: .08em;
+            margin-right: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .rec {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--ac);
+            animation: blink 1.2s infinite;
+            box-shadow: 0 0 10px var(--ac)
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: .15
+            }
+        }
+
+        nav a.l {
+            color: var(--mut);
+            position: relative;
+            transition: .2s
+        }
+
+        nav a.l:hover,
+        nav a.on {
+            color: var(--fg)
+        }
+
+        nav a.l:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            height: 2px;
+            width: 0;
+            background: var(--ac);
+            transition: .3s
+        }
+
+        nav a.on:after,
+        nav a.l:hover:after {
+            width: 100%
+        }
+
+        .btn {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--ac);
+            color: #fff;
+            font: 600 15px var(--b);
+            padding: 12px 24px;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform .2s
+        }
+
+        .btn:hover {
+            transform: translateY(-2px)
+        }
+
+        .btn:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+            transform: skewX(-20deg);
+            animation: sheen 3s infinite
+        }
+
+        @keyframes sheen {
+
+            60%,
+            100% {
+                left: 140%
+            }
+        }
+
+        .btn.o {
+            background: transparent;
+            border: 1px solid var(--fg);
+            color: var(--fg)
+        }
+
+        .call {
+            animation: ring 2s infinite
+        }
+
+        @keyframes ring {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 59, 48, .7)
+            }
+
+            70%,
+            100% {
+                box-shadow: 0 0 0 18px rgba(255, 59, 48, 0)
+            }
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px 90px
+        }
+
+        .view {
+            display: none
+        }
+
+        .view.on {
+            display: block;
+            animation: in .6s
+        }
+
+        @keyframes in {
+            from {
+                opacity: 0;
+                filter: blur(8px)
+            }
+        }
+
+        .vf {
+            position: relative;
+            margin-top: 22px;
+            min-height: 520px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 70% 40%, #3a1a14, #0a0a0c 65%);
+            display: flex;
+            align-items: center;
+            padding: 40px
+        }
+
+        .vf h1 {
+            font-size: clamp(46px, 9vw, 110px);
+            animation: focus 2s .3s both
+        }
+
+        @keyframes focus {
+            from {
+                filter: blur(24px);
+                opacity: 0;
+                letter-spacing: .3em
+            }
+        }
+
+        .vf p {
+            max-width: 460px;
+            color: #cfcfd6;
+            animation: focus 2s .6s both
+        }
+
+        .vf .btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+            animation: focus 2s .9s both
+        }
+
+        .c {
+            position: absolute;
+            width: 34px;
+            height: 34px;
+            border: 2px solid #fff;
+            opacity: .8
+        }
+
+        .c.a {
+            top: 16px;
+            left: 16px;
+            border-right: 0;
+            border-bottom: 0
+        }
+
+        .c.b {
+            top: 16px;
+            right: 16px;
+            border-left: 0;
+            border-bottom: 0
+        }
+
+        .c.d {
+            bottom: 16px;
+            left: 16px;
+            border-right: 0;
+            border-top: 0
+        }
+
+        .c.e {
+            bottom: 16px;
+            right: 16px;
+            border-left: 0;
+            border-top: 0
+        }
+
+        .hud {
+            position: absolute;
+            top: 22px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            font: 12px monospace;
+            color: #fff;
+            gap: 8px
+        }
+
+        .fbox {
+            position: absolute;
+            width: 90px;
+            height: 70px;
+            border: 2px solid #4cff7a;
+            animation: hunt 6s infinite;
+            box-shadow: 0 0 12px #4cff7a55
+        }
+
+        @keyframes hunt {
+            0% {
+                top: 30%;
+                left: 60%;
+                transform: scale(1.5);
+                opacity: .3
+            }
+
+            20% {
+                transform: scale(1);
+                opacity: 1
+            }
+
+            45% {
+                top: 55%;
+                left: 72%
+            }
+
+            70% {
+                top: 35%;
+                left: 50%
+            }
+
+            100% {
+                top: 30%;
+                left: 60%;
+                transform: scale(1.5);
+                opacity: .3
+            }
+        }
+
+        .ap {
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 380px;
+            height: 380px;
+            opacity: .55;
+            animation: spin 30s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .strip {
+            margin: 34px -20px;
+            overflow: hidden;
+            background: #000;
+            padding: 12px 0;
+            border-block: 2px dashed #333
+        }
+
+        .strip div {
+            display: flex;
+            gap: 14px;
+            width: max-content;
+            animation: roll 25s linear infinite
+        }
+
+        .strip span {
+            width: 150px;
+            height: 100px;
+            border-radius: 3px;
+            flex: none;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+            font: 18px var(--h);
+            color: #fff;
+            letter-spacing: .06em
+        }
+
+        @keyframes roll {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin-top: 20px
+        }
+
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 22px;
+            transition: .3s;
+            position: relative
+        }
+
+        .card:hover {
+            border-color: var(--ac);
+            transform: translateY(-6px) rotate(-.4deg)
+        }
+
+        .card h3 {
+            font-size: 28px
+        }
+
+        .card p,
+        .mut {
+            color: var(--mut)
+        }
+
+        .rv {
+            opacity: 0;
+            transform: translateY(40px) scale(.97);
+            transition: .8s
+        }
+
+        .rv.s {
+            opacity: 1;
+            transform: none
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            text-align: center;
+            margin: 40px 0;
+            gap: 10px
+        }
+
+        .stats b {
+            display: block;
+            font: 56px var(--h);
+            color: var(--ac2)
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 16px 0
+        }
+
+        .chip {
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--fg);
+            padding: 7px 16px;
+            border-radius: 99px;
+            cursor: pointer;
+            font: 14px var(--b);
+            transition: .2s
+        }
+
+        .chip.on,
+        .chip:hover {
+            background: var(--ac);
+            border-color: var(--ac);
+            color: #fff
+        }
+
+        .ph {
+            aspect-ratio: 4/3;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-end;
+            padding: 12px;
+            font: 22px var(--h);
+            color: #fff;
+            filter: blur(5px) saturate(.5);
+            transform: scale(1.04);
+            transition: filter .6s, transform .6s;
+            overflow: hidden;
+            position: relative
+        }
+
+        .ph:hover {
+            filter: none;
+            transform: scale(1)
+        }
+
+        .ph:before {
+            content: "";
+            position: absolute;
+            inset: 30%;
+            border: 2px solid #4cff7a;
+            opacity: 0;
+            transition: .3s
+        }
+
+        .ph:hover:before {
+            opacity: 1;
+            inset: 20%
+        }
+
+        .price {
+            font: 44px var(--h);
+            color: var(--ac2)
+        }
+
+        .card ul {
+            padding-left: 18px;
+            color: var(--mut)
+        }
+
+        label {
+            display: block;
+            font: 600 13px var(--b);
+            margin: 12px 0 4px;
+            color: var(--mut);
+            text-transform: uppercase;
+            letter-spacing: .08em
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: var(--bg);
+            color: var(--fg);
+            font: 15px var(--b);
+            transition: .2s
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 0;
+            border-color: var(--ac2);
+            box-shadow: 0 0 0 3px #ffc24733
+        }
+
+        .map {
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: #0e1a17;
+            margin-top: 16px
+        }
+
+        .map svg {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .pin {
+            animation: drop 1.2s both
+        }
+
+        @keyframes drop {
+            from {
+                transform: translateY(-120px);
+                opacity: 0
+            }
+
+            60% {
+                transform: translateY(8px)
+            }
+        }
+
+        .pul {
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: pp 2s infinite
+        }
+
+        @keyframes pp {
+            from {
+                transform: scale(.3);
+                opacity: .9
+            }
+
+            to {
+                transform: scale(2.4);
+                opacity: 0
+            }
+        }
+
+        .wrap {
+            overflow-x: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        td,
+        th {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .narrow {
+            max-width: 420px;
+            margin: 30px auto
+        }
+
+        .fab {
+            position: fixed;
+            right: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            z-index: 30
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 30px 20px 90px;
+            text-align: center;
+            color: var(--mut);
+            font-size: 14px
+        }
+
+        #fx {
+            position: fixed;
+            width: 46px;
+            height: 46px;
+            border: 2px solid var(--ac2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 60;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s;
+            display: none
+        }
+
+        @media (hover:hover) {
+            #fx {
+                display: block
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            :after {
+                animation: none !important;
+                transition: none !important
+            }
+
+            .rv {
+                opacity: 1;
+                transform: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="flash"></div>
+    <div id="fx"></div>
+    <header>
+        <nav>
+            <a class="logo" href="#home"><i class="rec"></i>YAMN DIGITAL STUDIO</a>
+            <a class="l" href="#home" data-v="home">Home</a><a class="l" href="#portfolio"
+                data-v="portfolio">Portfolio</a><a class="l" href="#services" data-v="services">Services</a><a class="l"
+                href="#contact" data-v="contact">Contact</a><a class="l" href="#login" data-v="login">Client Login</a>
+            <a class="btn call" href="tel:+9779842692079">&#9742; Call Now</a>
+        </nav>
+    </header>
+    <main>
+        <section class="view" id="home">
+            <div class="vf"><i class="c a"></i><i class="c b"></i><i class="c d"></i><i class="c e"></i><i
+                    class="fbox"></i>
+                <div class="hud"><span><i class="rec" style="display:inline-block"></i> REC <b
+                            id="tc">00:00:00</b></span><span>4K &middot; 50fps &middot; &#9646;&#9646;&#9646;</span>
+                </div>
+                <svg class="ap" viewBox="-100 -100 200 200" fill="none" stroke="#ff3b30" stroke-width="1.2">
+                    <circle r="96" />
+                    <circle r="70" />
+                    <circle r="30" stroke="#ffc247" />
+                    <g id="bl"></g>
+                </svg>
+                <div style="position:relative">
+                    <h1>Moments worth<br>keeping, in focus.</h1>
+                    <p>Photo &amp; video studio in Damak, Jhapa &mdash; weddings, ring ceremonies, festivals and
+                        passport/visa photos.</p>
+                    <div class="btns"><a class="btn call" href="tel:+9779842692079">&#9742; Book Now &mdash; Urgent
+                            Call</a><a class="btn o" href="#portfolio">View Work</a></div>
+                </div>
+            </div>
+            <div class="strip">
+                <div id="fs"></div>
+            </div>
+            <div class="grid">
+                <div class="card rv">
+                    <h3>Weddings</h3>
+                    <p>Cinematic photo and video from ceremony to reception.</p>
+                </div>
+                <div class="card rv">
+                    <h3>Ring Ceremonies</h3>
+                    <p>Candid storytelling for the day you say yes.</p>
+                </div>
+                <div class="card rv">
+                    <h3>Passport &amp; Visa</h3>
+                    <p>Quick, compliant photos &mdash; ready while you wait.</p>
+                </div>
+                <div class="card rv">
+                    <h3>Photo Framing</h3>
+                    <p>Frame your best memories for your walls.</p>
+                </div>
+            </div>
+            <div class="stats rv">
+                <div><b data-n="1000">0</b>Shoots</div>
+                <div><b data-n="500">0</b>Happy clients</div>
+                <div><b data-n="12">0</b>Hours open on weekdays</div>
+            </div>
+            <p class="mut" style="text-align:center">Sample numbers &mdash; replace with the studio's real ones.</p>
+        </section>
+
+        <section class="view" id="portfolio">
+            <h2 style="font-size:64px;margin-top:30px">Portfolio</h2>
+            <div class="chips" id="chips"></div>
+            <div class="grid" id="gal"></div>
+            <p class="mut">Hover a tile to pull focus. Placeholders &mdash; swap in real photos.</p>
+        </section>
+
+        <section class="view" id="services">
+            <h2 style="font-size:64px;margin-top:30px">Services &amp; Rates</h2>
+            <p class="mut">Sample tiers &mdash; edit to actual prices.</p>
+            <div class="grid">
+                <div class="card rv">
+                    <h3>Wedding Coverage</h3>
+                    <div class="price">NPR &mdash;</div>
+                    <ul>
+                        <li>Full-day photography</li>
+                        <li>Cinematic highlight film</li>
+                        <li>Private online gallery</li>
+                    </ul>
+                </div>
+                <div class="card rv">
+                    <h3>Event &amp; Ceremony</h3>
+                    <div class="price">NPR &mdash;</div>
+                    <ul>
+                        <li>Ring, bratabandha, birthdays</li>
+                        <li>Photo + video options</li>
+                    </ul>
+                </div>
+                <div class="card rv">
+                    <h3>Passport / Visa</h3>
+                    <div class="price">NPR &mdash;</div>
+                    <ul>
+                        <li>Correct size per country</li>
+                        <li>Print or digital</li>
+                    </ul>
+                </div>
+                <div class="card rv">
+                    <h3>Photo Framing</h3>
+                    <div class="price">NPR &mdash;</div>
+                    <ul>
+                        <li>Multiple sizes &amp; styles</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top:24px"><a class="btn call" href="tel:+9779842692079">&#9742; Book Now &mdash; Call</a>
+            </p>
+        </section>
+
+        <section class="view" id="contact">
+            <h2 style="font-size:64px;margin-top:30px">Contact</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Reach us</h3>
+                    <p><a href="tel:+9779842692079">&#9742; +977 984-2692079</a><br><a href="tel:+9779807007604">&#9742;
+                            +977 980-7007604</a><br><a href="mailto:yamandigitalstudio55@gmail.com">&#9993;
+                            yamandigitalstudio55@gmail.com</a><br><a href="https://www.facebook.com/yamanclick/"
+                            target="_blank" rel="noopener">Facebook page</a></p>
+                    <p class="mut">Sun&ndash;Thu &amp; Sat: 8:00 AM &ndash; 7:30 PM<br>Fri: 10:00 AM &ndash; 5:00 PM</p>
+                    <a class="btn call" href="tel:+9779842692079">&#9742; Urgent? Call Now</a>
+                </div>
+                <div class="card">
+                    <h3>Email inquiry</h3>
+                    <label for="n">Name</label><input id="n"><label for="s">Service</label><select id="s">
+                        <option>Wedding</option>
+                        <option>Ring ceremony</option>
+                        <option>Passport/Visa</option>
+                        <option>Framing</option>
+                        <option>Other</option>
+                    </select>
+                    <label for="m">Message</label><textarea id="m" rows="3"></textarea>
+                    <p><button class="btn" id="send">Send by Email</button></p>
+                </div>
+            </div>
+            <div class="map"><svg viewBox="0 0 800 360" role="img" aria-label="Map: Chiyadokan Chowk, Damak">
+                    <rect width="800" height="360" fill="#0e1a17" />
+                    <g stroke="#1f3a33" stroke-width="2">
+                        <path d="M0 90H800M0 250H800M160 0V360M560 0V360" />
+                    </g>
+                    <g stroke="#2f5a4d" stroke-width="9">
+                        <path d="M0 180H800M400 0V360" />
+                    </g>
+                    <path d="M0 330C200 270 300 340 800 280" stroke="#1d4b66" stroke-width="14" fill="none" />
+                    <g fill="#2a4a40" font:12px>
+                        <rect x="430" y="40" width="90" height="60" rx="4" />
+                        <rect x="250" y="200" width="100" height="40" rx="4" />
+                        <rect x="600" y="200" width="120" height="50" rx="4" />
+                    </g>
+                    <circle class="pul" cx="400" cy="180" r="20" fill="#ff3b30" />
+                    <circle class="pul" cx="400" cy="180" r="20" fill="#ff3b30" style="animation-delay:1s" />
+                    <g class="pin">
+                        <path d="M400 180c-14-22-24-34-24-48a24 24 0 0 1 48 0c0 14-10 26-24 48z" fill="#ff3b30" />
+                        <circle cx="400" cy="132" r="9" fill="#fff" />
+                    </g>
+                    <text x="400" y="228" fill="#fff" font-size="20" text-anchor="middle" font-family="system-ui">Yamn
+                        Digital Studio &middot; Chiyadokan Chowk</text><text x="400" y="252" fill="#9bb" font-size="14"
+                        text-anchor="middle" font-family="system-ui">Damak-04, Jhapa</text>
+                </svg>
+                <div style="padding:14px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn"
+                        href="https://www.google.com/maps/search/?api=1&query=Chiyadokan+Chowk+Damak+Jhapa"
+                        target="_blank" rel="noopener">Open in Google Maps</a><a class="btn o"
+                        href="https://www.google.com/maps/dir/?api=1&destination=Chiyadokan+Chowk+Damak+Jhapa"
+                        target="_blank" rel="noopener">Get Directions</a></div>
+            </div>
+            <p class="mut"> The buttons open the exact live location in Google Maps.</p>
+        </section>
+
+        <section class="view" id="login">
+            <div id="auth" class="card narrow">
+                <h2 style="font-size:44px">Client Login</h2>
+                <label for="u">Email or username</label><input id="u" autocomplete="username"><label
+                    for="p">Password</label><input id="p" type="password" autocomplete="current-password">
+                <p><button class="btn" id="go">Log in</button></p>
+                <p class="mut">Register &middot; Forgot password?<br>Prototype: any input opens a demo dashboard.</p>
+            </div>
+            <div id="dash" style="display:none">
+                <h2 style="font-size:56px;margin-top:30px">Welcome back</h2>
+                <div class="chips" id="dt"></div>
+                <div class="card" id="dc"></div>
+                <p><button class="chip" id="out">Log out</button></p>
+            </div>
+        </section>
+    </main>
+    <a class="btn call fab" href="tel:+9779842692079">&#9742; Call Now</a>
+    <footer><b>Yamn Digital Studio</b> (Yaman Digital Photo &amp; Video Studio)<br>Damak-04, Chiyadokan Chowk, Jhapa,
+        Koshi Province, Nepal<br>+977 984-2692079 &middot; +977 980-7007604 &middot; yamandigitalstudio55@gmail.com
+    </footer>
+    <script>
+        var $ = function (i) { return document.getElementById(i) }, Q = function (s) { return document.querySelectorAll(s) };
+        function shot() { var f = $('flash'); f.style.animation = 'none'; f.offsetHeight; f.style.animation = 'flash .5s ease-out forwards' }
+        function route() { var v = (location.hash || '#home').slice(1); if (!$(v)) v = 'home'; Q('.view').forEach(function (e) { e.classList.toggle('on', e.id === v) }); Q('nav a[data-v]').forEach(function (a) { a.classList.toggle('on', a.dataset.v === v) }); window.scrollTo(0, 0); reveal(); if (v !== 'home') shot() }
+        addEventListener('hashchange', route);
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('s'); io.unobserve(e.target) } }) }, { threshold: .15 });
+        function reveal() { Q('.view.on .rv').forEach(function (e) { io.observe(e) }); Q('.view.on [data-n]').forEach(function (e) { if (e.dataset.d) return; e.dataset.d = 1; var t = +e.dataset.n, i = 0, x = setInterval(function () { i += t / 40; if (i >= t) { i = t; clearInterval(x) } e.textContent = Math.round(i) + (t > 100 ? '+' : '') }, 40) }) }
+        var bl = ''; for (var i = 0; i < 6; i++)bl += '<path d="M0 -30L' + (86 * Math.cos(i)) + ' -88" transform="rotate(' + i * 60 + ')"/>'; $('bl').innerHTML = bl;
+        var cats = ['All', 'Weddings', 'Ring Ceremonies', 'Passport/Visa', 'Festivals'], cols = ['#c0392b', '#7a4b8c', '#1f7a72', '#b8860b', '#3c5a99'], it = [];
+        for (var i = 0; i < 8; i++) { var c = 1 + i % 4; it.push({ c: cats[c], k: cols[c] }) }
+        $('fs').innerHTML = [0, 1].map(function () { return cats.slice(1).concat(cats.slice(1)).map(function (c, i) { return '<span style="background:linear-gradient(135deg,' + cols[1 + i % 4] + ',#111)">' + c + '</span>' }).join('') }).join('');
+        var cur = 'All'; function draw() { $('chips').innerHTML = cats.map(function (c) { return '<button class="chip' + (c === cur ? ' on' : '') + '" data-c="' + c + '">' + c + '</button>' }).join(''); $('gal').innerHTML = it.filter(function (x) { return cur === 'All' || x.c === cur }).map(function (x) { return '<div class="ph" style="background:linear-gradient(135deg,' + x.k + ',#111)">' + x.c + '</div>' }).join('') }
+        $('chips').onclick = function (e) { if (e.target.dataset.c) { cur = e.target.dataset.c; draw(); shot() } }; draw();
+        $('send').onclick = function () { location.href = 'mailto:yamandigitalstudio55@gmail.com?subject=' + encodeURIComponent('Inquiry: ' + $('s').value) + '&body=' + encodeURIComponent('Name: ' + $('n').value + '\n\n' + $('m').value) };
+        var T = { 'Proofing Gallery': 'Watermarked proofs appear here. Tap to favourite photos for final editing.', 'Downloads': 'High-resolution files appear here once paid.', 'Bookings & Invoices': 'No bookings yet.' }, tn = Object.keys(T);
+        function tab(n) { $('dt').innerHTML = tn.map(function (t) { return '<button class="chip' + (t === n ? ' on' : '') + '" data-t="' + t + '">' + t + '</button>' }).join(''); $('dc').innerHTML = '<h3>' + n + '</h3><p class="mut">' + T[n] + '</p>' }
+        $('dt').onclick = function (e) { if (e.target.dataset.t) tab(e.target.dataset.t) };
+        $('go').onclick = function () { if (!$('u').value) return; $('auth').style.display = 'none'; $('dash').style.display = 'block'; tab(tn[0]); shot() };
+        $('out').onclick = function () { $('dash').style.display = 'none'; $('auth').style.display = 'block' };
+        var s = 0; setInterval(function () { s++; var p = function (n) { return String(n).padStart(2, '0') }; $('tc').textContent = '00:' + p(Math.floor(s / 60) % 60) + ':' + p(s % 60) }, 1000);
+        var fx = $('fx'); addEventListener('mousemove', function (e) { fx.style.left = e.clientX + 'px'; fx.style.top = e.clientY + 'px' });
+        addEventListener('mousedown', function () { fx.style.width = fx.style.height = '30px' }); addEventListener('mouseup', function () { fx.style.width = fx.style.height = '46px' });
+        route();
+    </script>
+</body>
+
+</html>
