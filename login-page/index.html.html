@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Authentication</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#0b0618; --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+  --text:#f4efff; --mute:#b8adbd; --a:#8b5cf6; --b:#d946ef; --ok:#22c55e;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:"Sora","Segoe UI",system-ui,sans-serif;display:grid;place-items:center;overflow:hidden;padding:16px}
+.blob{position:fixed;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.45;z-index:0}
+.b1{background:var(--a);top:-120px;left:-100px}
+.b2{background:var(--b);bottom:-140px;right:-100px}
+
+.card{position:relative;z-index:1;width:min(420px,100%);padding:28px 24px;border-radius:28px;background:var(--card);border:1px solid var(--line);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+
+/* Mascot Layout */
+.mascot-wrapper{display:flex;justify-content:center;align-items:center;margin-bottom:16px;height:100px}
+.mascot{display:block;width:100px;height:100px}
+.mascot svg{width:100%;height:100%;overflow:visible;animation:float 3.2s ease-in-out infinite;transform-origin:60px 60px;transition:transform .4s cubic-bezier(.3,1.5,.5,1)}
+@keyframes float{50%{transform:translateY(-5px)}}
+.mascot.no svg{animation:nope .45s}
+@keyframes nope{20%{transform:translateX(-9px) rotate(-6deg)}60%{transform:translateX(9px) rotate(6deg)}}
+
+h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;text-align:center}
+p.sub{color:var(--mute);font-size:14px;line-height:1.4;margin-bottom:20px;text-align:center}
+.step{display:none}.step.on{display:block;animation:in .4s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Input with Country Code Selector */
+.phone{display:flex;align-items:center;gap:6px;padding:0 12px;height:54px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line);transition:.25s}
+.phone:focus-within{border-color:var(--a);box-shadow:0 0 0 4px rgba(139,92,246,.22)}
+.phone input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font:inherit;font-size:16px;letter-spacing:.02em}
+.phone+.phone{margin-top:12px}
+.phone input::placeholder{color:var(--mute);opacity:0.85}
+
+.country-select{
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:6px 8px;
+  font-size:13px;
+  outline:none;
+  cursor:pointer;
+  transition:all .25s ease;
+  max-width:110px;
+  opacity:1;
+}
+.country-select.hide{display:none}
+.country-select:hover{background:rgba(255,255,255,.15)}
+.country-select option{background:#1c1233;color:var(--text)}
+
+button.main{width:100%;height:54px;margin-top:18px;border:0;border-radius:16px;font:inherit;font-weight:600;font-size:16px;color:#fff;cursor:pointer;background:linear-gradient(120deg,var(--a),var(--b));box-shadow:0 12px 30px rgba(139,92,246,.4);transition:transform .2s,opacity .2s,filter .2s}
+button.main:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.err{color:#fb7185;font-size:13px;min-height:18px;margin-top:8px;text-align:center}
+
+/* Stage & OTP Inputs */
+.stage{position:relative;height:84px;transition:height .35s ease;display:flex;align-items:center;justify-content:center;margin-top:10px}
+.stage.big{height:160px}
+.row{display:flex;gap:8px;justify-content:center}
+.box{width:44px;height:54px;border-radius:14px;text-align:center;font:inherit;font-size:22px;font-weight:700;color:var(--text);background:rgba(255,255,255,.06);border:1px solid var(--line);outline:0;
+  transition:rotate .9s cubic-bezier(.6,0,.2,1),transform .8s cubic-bezier(.7,0,.3,1),opacity .3s,border-color .2s,box-shadow .2s;caret-color:var(--b)}
+.box.fill{border-color:var(--b)}
+.box.orb{border-color:var(--b);box-shadow:0 0 18px rgba(217,70,239,.7);background:rgba(217,70,239,.18)}
+.row.gone .box{opacity:0}
+.final{position:absolute;left:50%;top:50%;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:24px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--a),var(--b));transform:scale(.55);opacity:0;pointer-events:none;
+  transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .3s}
+.final::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--ok);opacity:0;transition:opacity 1.2s ease;box-shadow:0 0 40px rgba(34,197,94,.7)}
+.final.show{transform:scale(1);opacity:1}
+.final.green::before{opacity:1}
+.final svg{position:relative;width:42px;height:42px;z-index:2}
+.final path{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:50;stroke-dashoffset:50;transition:stroke-dashoffset .7s ease}
+.final.tick path{stroke-dashoffset:0}
+.ok-text{text-align:center;margin-top:16px;opacity:0;transform:translateY(8px);transition:.6s}
+.ok-text.on{opacity:1;transform:none}
+.ok-text b{display:block;font-size:18px;margin-bottom:4px}
+.ok-text small{color:var(--mute)}
+
+.links{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:13px;color:var(--mute)}
+.links.center{justify-content:center}
+.links a{color:var(--text);cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.links a:hover{color:var(--b)}
+
+.forgot-link{display:block;text-align:right;margin-top:8px;font-size:13px;color:var(--mute);text-decoration:none;cursor:pointer}
+.forgot-link:hover{color:var(--b);text-decoration:underline}
+
+.toast{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-140%);z-index:5;background:#1c1233;border:1px solid var(--line);padding:12px 18px;border-radius:14px;font-size:14px;transition:transform .5s cubic-bezier(.3,1.4,.5,1);max-width:92%}
+.toast.on{transform:translate(-50%,0)}
+.toast b{letter-spacing:.2em;color:#e9b6ff;margin-left:6px}
+
+/* Mascot Hands */
+.hand{
+  fill:#d8c2ff;stroke:#fff;stroke-opacity:.55;stroke-width:1.5;
+  transform:translate(0, 0);
+  transition:transform .45s cubic-bezier(.3,1.5,.5,1);
+}
+.hand.r{transition-delay:.04s}
+
+/* Cover Eyes (Password Hidden) */
+.cover .hand.l{transform:translate(2px, -28px)}
+.cover .hand.r{transform:translate(-2px, -28px)}
+
+/* Peek Mode (Password Shown) */
+.peek .hand.l{transform:translate(4px, 18px)}
+.peek .hand.r{transform:translate(-4px, 18px)}
+
+.eyes{transform-origin:60px 60px;transition:transform .4s cubic-bezier(.3,1.7,.5,1)}
+.peek .eyes{transform:scale(1.08) translateY(-1px)}
+.blink{transform-origin:60px 60px;animation:blink 4.5s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.pupil{transition:transform .1s ease-out}
+
+.eye{background:none;border:0;color:var(--mute);cursor:pointer;display:grid;place-items:center;padding:6px;border-radius:10px;transition:.2s}
+.eye:hover{color:var(--text)}.eye.on{color:var(--b)}
+.eye .sl{transition:opacity .2s}.eye.on .sl{opacity:0}
+
+/* Sunglasses */
+.glasses{
+  opacity: 0;
+  transform: translateY(-25px) scale(0.6);
+  transform-origin: 60px 58px;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(.3,1.6,.5,1);
+}
+.mascot.cool .glasses{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Shy Mode */
+.blush{transition:opacity .3s ease;opacity:.25}
+.mascot.shy .blush{opacity:.85}
+.mascot.shy .hand.l{transform:translate(12px,-18px) rotate(20deg)}
+.mascot.shy .hand.r{transform:translate(-12px,-18px) rotate(-20deg)}
+
+/* Afraid Mode */
+.mouth-afraid, .eyes-afraid{display:none}
+.mascot.afraid svg{animation:shiver 0.12s infinite ease-in-out!important}
+@keyframes shiver{
+  0%{transform:translate(-1.5px,1.5px)}
+  50%{transform:translate(1.5px,-1.5px)}
+  100%{transform:translate(-1px,-1px)}
+}
+.mascot.afraid .mouth-happy, .mascot.afraid .eyes-normal{display:none}
+.mascot.afraid .mouth-afraid, .mascot.afraid .eyes-afraid{display:block}
+.mascot.afraid .hand.l{transform:translate(10px,-10px) rotate(10deg)}
+.mascot.afraid .hand.r{transform:translate(-10px,-10px) rotate(-10deg)}
+
+/* Wrong code blast */
+.box.bad{border-color:#fb7185;background:rgba(251,113,133,.22);box-shadow:0 0 22px rgba(251,113,133,.75);color:#fff}
+.card.hit{animation:hit .55s}
+@keyframes hit{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}}
+.spark{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px;border-radius:50%;pointer-events:none}
+.ring{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px;border-radius:50%;border:3px solid #fb7185;box-shadow:0 0 24px #fb7185;pointer-events:none}
+
+.phone input:focus, .box:focus {
+  border-color: var(--a);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.3);
+}
+button.main:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  .card { padding: 22px 18px; border-radius: 22px; }
+  .row { gap: 6px; }
+  .box { width: 38px; height: 48px; font-size: 19px; }
+  .blob { width: 280px; height: 280px; }
+}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="toast" id="toast"></div>
+
+<main class="card" id="card">
+  <!-- Mascot Container -->
+  <div class="mascot-wrapper">
+    <div class="mascot" id="mascot">
+      <svg viewBox="0 0 120 120" id="mascot-svg">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#d946ef"/>
+          </linearGradient>
+        </defs>
+        <!-- Ears & Head -->
+        <path d="M22 38L28 8L52 26Z" fill="#9d6bff"/>
+        <path d="M98 38L92 8L68 26Z" fill="#d946ef"/>
+        <circle cx="60" cy="66" r="46" fill="url(#g)"/>
+        <ellipse class="blush" cx="28" cy="78" rx="8" ry="5" fill="#ff7eb6"/>
+        <ellipse class="blush" cx="92" cy="78" rx="8" ry="5" fill="#ff7eb6"/>
+
+        <!-- Normal Mouth -->
+        <path class="mouth-happy" d="M51 84Q60 92 69 84" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+        <!-- Afraid Mouth -->
+        <path class="mouth-afraid" d="M50 86 Q55 81 60 86 T70 86" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+        <!-- Eyes Normal -->
+        <g class="eyes eyes-normal"><g class="blink">
+          <circle cx="44" cy="60" r="12" fill="#fff"/><circle cx="76" cy="60" r="12" fill="#fff"/>
+          <g class="pupil"><circle cx="44" cy="60" r="6" fill="#1a0b33"/><circle cx="46" cy="58" r="2" fill="#fff"/></g>
+          <g class="pupil"><circle cx="76" cy="60" r="6" fill="#1a0b33"/><circle cx="78" cy="58" r="2" fill="#fff"/></g>
+        </g></g>
+
+        <!-- Eyes Afraid -->
+        <g class="eyes-afraid">
+          <circle cx="44" cy="60" r="13" fill="#fff"/><circle cx="76" cy="60" r="13" fill="#fff"/>
+          <g class="pupil"><circle cx="44" cy="60" r="3.5" fill="#1a0b33"/><circle cx="45" cy="59" r="1.2" fill="#fff"/></g>
+          <g class="pupil"><circle cx="76" cy="60" r="3.5" fill="#1a0b33"/><circle cx="77" cy="59" r="1.2" fill="#fff"/></g>
+        </g>
+
+        <!-- Sunglasses -->
+        <g class="glasses">
+          <path d="M28 50 L58 50 Q58 68 43 68 Q28 68 28 50 Z" fill="#0d0914" stroke="#2a1b4e" stroke-width="1.5"/>
+          <path d="M62 50 L92 50 Q92 68 77 68 Q62 68 62 50 Z" fill="#0d0914" stroke="#2a1b4e" stroke-width="1.5"/>
+          <path d="M58 54 L62 54 M20 52 L28 52 M92 52 L100 52" stroke="#0d0914" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M31 53 L42 53 L34 63 Z" fill="#ffffff" opacity="0.25"/>
+          <path d="M65 53 L76 53 L68 63 Z" fill="#ffffff" opacity="0.25"/>
+        </g>
+
+        <!-- Paws -->
+        <ellipse class="hand l" cx="42" cy="88" rx="14" ry="12"/>
+        <ellipse class="hand r" cx="78" cy="88" rx="14" ry="12"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- STEP 0: LOGIN -->
+  <section class="step on" id="s0">
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in with your email or mobile number.</p>
+    <label class="phone">
+      <select class="country-select" id="c0">
+        <option value="+977" selected>🇳🇵 +977</option>
+        <option value="+91">🇮🇳 +91</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+1">🇨🇦 +1</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+">🌐 Other</option>
+      </select>
+      <input id="id" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" inputmode="text" placeholder="Email or phone number">
+    </label>
+    <label class="phone">
+      <input id="pw" type="password" autocomplete="current-password" placeholder="Password">
+      <button type="button" class="eye" id="eye" aria-label="Show password">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="sl" d="M4 4l16 16"/>
+        </svg>
+      </button>
+    </label>
+    <a class="forgot-link" id="goto-forgot">Forgot password?</a>
+    <div class="err" id="e1"></div>
+    <button class="main" id="login">Sign in</button>
+    <div class="links center" style="margin-top:16px">
+      <span>Don't have an account? <a id="goto-reg">Register</a></span>
+    </div>
+  </section>
+
+  <!-- STEP 1: REGISTER -->
+  <section class="step" id="s_reg">
+    <h1>Create account</h1>
+    <p class="sub">Join us today in just a few seconds.</p>
+    <label class="phone"><input id="reg_name" type="text" placeholder="Full name"></label>
+    <label class="phone">
+      <select class="country-select" id="c_reg">
+        <option value="+977" selected>🇳🇵 +977</option>
+        <option value="+91">🇮🇳 +91</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+1">🇨🇦 +1</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+">🌐 Other</option>
+      </select>
+      <input id="reg_id" type="text" autocapitalize="none" autocorrect="off" inputmode="text" placeholder="Email or phone number">
+    </label>
+    <label class="phone">
+      <input id="reg_pw" type="password" placeholder="Password (min 6 chars)">
+      <button type="button" class="eye" id="reg_eye" aria-label="Show password">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="sl" d="M4 4l16 16"/>
+        </svg>
+      </button>
+    </label>
+    <div class="err" id="e_reg"></div>
+    <button class="main" id="btn-register">Register</button>
+    <div class="links center" style="margin-top:16px">
+      <span>Already have an account? <a id="goto-login-from-reg">Sign in</a></span>
+    </div>
+  </section>
+
+  <!-- STEP 2: FORGOT PASSWORD -->
+  <section class="step" id="s_forgot">
+    <h1>Reset password</h1>
+    <p class="sub">Enter your email or phone to receive a code.</p>
+    <label class="phone">
+      <select class="country-select" id="c_forgot">
+        <option value="+977" selected>🇳🇵 +977</option>
+        <option value="+91">🇮🇳 +91</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+1">🇨🇦 +1</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+">🌐 Other</option>
+      </select>
+      <input id="forgot_id" type="text" autocapitalize="none" autocorrect="off" inputmode="text" placeholder="Email or phone number">
+    </label>
+    <div class="err" id="e_forgot"></div>
+    <button class="main" id="btn-forgot">Send reset code</button>
+    <div class="links center" style="margin-top:16px">
+      <span>Remembered it? <a id="goto-login-from-forgot">Back to Sign in</a></span>
+    </div>
+  </section>
+
+  <!-- STEP 3: OTP VERIFICATION -->
+  <section class="step" id="s2">
+    <h1>Enter verification code</h1>
+    <p class="sub" id="sub2">We sent a 6-digit code to your device.</p>
+    <div class="stage" id="stage">
+      <div class="row" id="row"></div>
+      <div class="final" id="final"><svg viewBox="0 0 48 48"><path d="M10 25 L20 35 L38 14"/></svg></div>
+    </div>
+    <div class="err" id="e2"></div>
+    <div class="ok-text" id="ok"><b>Verified successfully!</b><small>Access granted.</small></div>
+    <div class="links" id="links"><a id="back">Back to login</a><a id="resend">Resend code</a></div>
+  </section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const row=$('row');
+let code='',boxes=[];
+
+for(let i=0;i<6;i++){
+  const b=document.createElement('input');
+  b.className='box';b.maxLength=1;b.inputMode='numeric';b.autocomplete=i?'off':'one-time-code';
+  b.style.setProperty('--i',i);
+  row.appendChild(b);boxes.push(b);
+}
+
+function toast(msg){
+  const t=$('toast');t.innerHTML=msg;t.classList.add('on');
+  clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),6000);
+}
+
+function newCode(){
+  code=String(Math.floor(100000+Math.random()*900000));
+  toast('Demo SMS: your code is <b>'+code+'</b>');
+}
+
+const m=$('mascot'),pw=$('pw'),regPw=$('reg_pw'),idf=$('id'),eye=$('eye'),regEye=$('reg_eye'),pup=[...document.querySelectorAll('.pupil')];
+const mailRe=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function look(x,y){pup.forEach(p=>p.style.transform=`translate(${x}px,${y}px)`)}
+function setEmotion(e){
+  m.classList.remove('afraid','cool','shy');
+  if(e) m.classList.add(e);
+}
+
+function mstate(){
+  const active=document.activeElement;
+  const isPw = (active===pw || active===regPw);
+  const currentPwInput = active===regPw ? regPw : pw;
+  const shown = currentPwInput.type==='text';
+
+  m.classList.toggle('cover', isPw && !shown);
+  m.classList.toggle('peek', isPw && shown);
+  if (isPw && shown) look(0, 2);
+}
+
+// Mouse cursor eye tracking
+document.addEventListener('mousemove', (e) => {
+  const active = document.activeElement;
+  if (active === pw || active === regPw) return;
+
+  const svg = $('mascot-svg');
+  if (!svg) return;
+  const rect = svg.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const dx = e.clientX - centerX;
+  const dy = e.clientY - centerY;
+  const dist = Math.hypot(dx, dy);
+
+  const maxEyeOffset = 6.5;
+  const factor = Math.min(dist / 300, 1) * maxEyeOffset;
+  const angle = Math.atan2(dy, dx);
+
+  look(Math.cos(angle) * factor, Math.sin(angle) * factor);
+});
+
+// Hide country selector when an email is being typed
+function handleEmailPhoneToggle(inputEl, selectEl){
+  const val = inputEl.value.trim();
+  const isEmailMode = /[a-zA-Z@]/.test(val);
+  selectEl.classList.toggle('hide', isEmailMode);
+  inputEl.inputMode = isEmailMode ? 'email' : 'text';
+}
+
+[
+  { input: $('id'), select:$('c0') },
+  { input: $('reg_id'), select:$('c_reg') },
+  { input: $('forgot_id'), select:$('c_forgot') }
+].forEach(pair=>{
+  if(!pair.input) return;
+  pair.input.addEventListener('input', ()=>{
+    handleEmailPhoneToggle(pair.input, pair.select);
+    look(Math.min(pair.input.value.length,24)/24*8-4,4);
+  });
+});
+
+function parseIdentifier(val, countryCode, selectEl) {
+  const clean = val.trim();
+  if (/[a-zA-Z@]/.test(clean)) return mailRe.test(clean) ? { type: 'email', value: clean } : null;
+  const digits = clean.replace(/\D/g, '');
+  if (digits.length >= 7 && digits.length <= 15) {
+    const code = selectEl.classList.contains('hide') ? '' : (countryCode === '+' ? '+' : countryCode);
+    return { type: 'phone', value: code + digits };
+  }
+  return null;
+}
+
+// Password cover/peek for both login & registration
+[pw, regPw].forEach(pInput=>{
+  if(!pInput) return;
+  pInput.addEventListener('focus',mstate);
+  pInput.addEventListener('blur',mstate);
+  pInput.addEventListener('input',mstate);
+});
+
+function bindEye(btn, targetPw){
+  btn.addEventListener('mousedown',e=>e.preventDefault());
+  btn.onclick=()=>{
+    const show=targetPw.type==='password';
+    targetPw.type=show?'text':'password';
+    btn.classList.toggle('on',show);
+    mstate();
+  };
+}
+bindEye(eye, pw);
+bindEye(regEye, regPw);
+
+function switchStep(fromId, toId, emotion=''){
+  const fromEl = typeof fromId === 'string' ? $(fromId) : fromId;
+  const toEl = typeof toId === 'string' ? $(toId) : toId;
+  if(!fromEl || !toEl) return;
+
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('on'));
+  toEl.classList.add('on');
+  setEmotion(emotion);
+  mstate();
+}
+
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (!t) return;
+
+  if (t.id === 'goto-forgot') {
+    e.preventDefault();
+    switchStep('s0', 's_forgot', 'afraid');
+  } else if (t.id === 'goto-reg') {
+    e.preventDefault();
+    switchStep('s0', 's_reg', 'shy');
+  } else if (t.id === 'goto-login-from-reg') {
+    e.preventDefault();
+    switchStep('s_reg', 's0', '');
+  } else if (t.id === 'goto-login-from-forgot') {
+    e.preventDefault();
+    switchStep('s_forgot', 's0', '');
+  } else if (t.id === 'back') {
+    e.preventDefault();
+    switchStep('s2', 's0', '');
+  } else if (t.id === 'resend') {
+    e.preventDefault();
+    resetStage(); newCode(); boxes[0].focus();
+  }
+});
+
+function fail(eId,t){
+  $(eId).textContent=t;
+  m.classList.remove('no');
+  void m.offsetWidth;
+  m.classList.add('no');
+  setTimeout(()=>m.classList.remove('no'),500);
+}
+
+const mask=v=>mailRe.test(v)?v.replace(/^(.{2}).*(@.*)$/,'$1•••$2'):v.slice(0,5)+'••••'+v.slice(-3);
+
+$('login').onclick=()=>{
+  const parsed = parseIdentifier(idf.value, $('c0').value, $('c0'));$('e1').textContent='';
+  if(!parsed) return fail('e1','Please enter a valid email or phone number.');
+  if(pw.value.length<6) return fail('e1','Password must be at least 6 characters.');
+  switchStep('s0','s2','');
+  $('sub2').textContent='We sent a code to '+mask(parsed.value)+'.';
+  resetStage();newCode();boxes[0].focus();
+};
+
+$('btn-register').onclick=()=>{
+  const name=$('reg_name').value.trim(), p=$('reg_pw').value;
+  const parsed = parseIdentifier($('reg_id').value, $('c_reg').value, $('c_reg'));$('e_reg').textContent='';
+  if(!name) return fail('e_reg','Please enter your full name.');
+  if(!parsed) return fail('e_reg','Please enter a valid email or phone number.');
+  if(p.length<6) return fail('e_reg','Password must be at least 6 characters.');
+
+  switchStep('s_reg','s2','');
+  $('sub2').textContent='Verify code sent to '+mask(parsed.value)+'.';
+  resetStage();newCode();boxes[0].focus();
+};
+
+$('btn-forgot').onclick=()=>{
+  const parsed = parseIdentifier($('forgot_id').value, $('c_forgot').value, $('c_forgot'));$('e_forgot').textContent='';
+  if(!parsed) return fail('e_forgot','Please enter a valid email or phone number.');
+  switchStep('s_forgot','s2','');
+  $('sub2').textContent='Password reset code sent to '+mask(parsed.value)+'.';
+  resetStage();newCode();boxes[0].focus();
+};
+
+function resetStage(){
+  cancelAnimationFrame(raf);setEmotion('');
+  $('stage').classList.remove('big');
+  boxes.forEach(b=>{b.value='';b.disabled=false;b.className='box';b.style.transform='';b.style.transition=''});
+  row.className='row';
+  $('final').className='final';$('ok').classList.remove('on');
+  $('links').style.display='';$('e2').textContent='';
+}
+
+boxes.forEach((b,i)=>{
+  b.addEventListener('input',()=>{
+    b.value=b.value.replace(/\D/g,'').slice(-1);
+    b.classList.toggle('fill',!!b.value);
+    if(b.value&&i<5)boxes[i+1].focus();
+    checkCode();
+  });
+  b.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&!b.value&&i>0){boxes[i-1].focus();boxes[i-1].value='';boxes[i-1].classList.remove('fill')}
+    if(e.key==='ArrowLeft'&&i>0)boxes[i-1].focus();
+    if(e.key==='ArrowRight'&&i<5)boxes[i+1].focus();
+  });
+  b.addEventListener('paste',e=>{
+    e.preventDefault();
+    const d=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);
+    d.split('').forEach((c,k)=>{boxes[k].value=c;boxes[k].classList.add('fill')});
+    boxes[Math.min(d.length,5)].focus();
+    checkCode();
+  });
+});
+
+function checkCode(){
+  const v=boxes.map(b=>b.value).join('');
+  if(v.length<6)return;
+  if(v!==code){
+    triggerIncorrectCode();
+  } else {
+    triggerCorrectCode();
+  }
+}
+
+// Wrong code: red boxes, explosion, shockwave ring, sparks
+function triggerIncorrectCode(){
+  setEmotion('afraid');
+  boxes.forEach(b=>{b.blur();b.disabled=true;b.classList.add('bad')});
+  $('e2').textContent='Incorrect code. Try again.';
+  $('card').classList.add('hit');
+  const st=$('stage');
+
+  setTimeout(()=>{
+    boxes.forEach((b,i)=>{
+      const a=i/6*6.283+Math.random(),d=90+Math.random()*70;
+      b.animate([{transform:'scale(1)',opacity:1},{transform:'scale(1.35)',opacity:1,offset:.2},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) rotate(${Math.random()*540-270}deg) scale(0)`,opacity:0}],{duration:700,easing:'ease-out',fill:'forwards'});
+    });
+    const ring=document.createElement('div');ring.className='ring';st.appendChild(ring);
+    ring.animate([{transform:'scale(.3)',opacity:1},{transform:'scale(6)',opacity:0}],{duration:750,easing:'ease-out'}).onfinish=()=>ring.remove();
+
+    const cols=['#fb7185','#f97316','#facc15','#ffffff'];
+    for(let i=0;i<30;i++){
+      const p=document.createElement('i');p.className='spark';p.style.background=cols[i%4];st.appendChild(p);
+      const a=Math.random()*6.283,d=70+Math.random()*120;
+      p.animate([{transform:'translate(0,0) scale(1.2)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) scale(0)`,opacity:0}],{duration:600+Math.random()*400,easing:'cubic-bezier(.1,.8,.3,1)'}).onfinish=()=>p.remove();
+    }
+  },200);
+
+  setTimeout(()=>{
+    boxes.forEach(b=>{
+      b.getAnimations().forEach(x=>x.cancel());
+      b.value='';b.disabled=false;b.classList.remove('bad','fill');
+      b.animate([{transform:'scale(.3)',opacity:0},{transform:'none',opacity:1}],{duration:350,easing:'cubic-bezier(.3,1.6,.5,1)'});
+    });
+    $('card').classList.remove('hit');$('e2').textContent='';setEmotion('');
+    boxes[0].focus();
+  },1400);
+}
+
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const lerp=(a,b,t)=>a+(b-a)*t;
+let raf;
+
+// Correct code: orbit, merge into one box, turn green, draw tick
+function triggerCorrectCode(){
+  $('e2').textContent='';$('links').style.display='none';
+  boxes.forEach(b=>{b.disabled=true;b.blur()});
+  $('stage').classList.add('big');
+
+  const r=row.getBoundingClientRect(),cx=r.left+r.width/2;
+  const home=boxes.map(b=>{const q=b.getBoundingClientRect();return q.left+q.width/2-cx});
+  boxes.forEach(b=>{b.style.transition='none';b.classList.add('orb')});
+
+  const R=52,T1=400,T2=1000,T3=400,total=T1+T2+T3;
+  const t0=performance.now()+100;
+
+  function frame(now){
+    const t=now-t0;
+    if(t<0){raf=requestAnimationFrame(frame);return}
+    boxes.forEach((b,i)=>{
+      const a0=-Math.PI/2+i*Math.PI/3;
+      let ang,rad,sc,hx=home[i],x,y;
+      if(t<T1){
+        const k=ease(t/T1);
+        ang=a0;rad=R;sc=lerp(1,.65,k);
+        x=lerp(hx,Math.cos(a0)*R,k);y=lerp(0,Math.sin(a0)*R,k);
+      }else if(t<T1+T2){
+        const k=ease((t-T1)/T2);
+        ang=a0+k*Math.PI*2;rad=R;sc=.65;
+        x=Math.cos(ang)*rad;y=Math.sin(ang)*rad;
+      }else{
+        const k=Math.min((t-T1-T2)/T3,1),e=k*k;
+        ang=a0+Math.PI*2+k*Math.PI;rad=lerp(R,0,e);sc=lerp(.65,.35,e);
+        x=Math.cos(ang)*rad;y=Math.sin(ang)*rad;
+      }
+      const spin=t<T1?lerp(0,360,ease(t/T1)):ang*180/Math.PI;
+      b.style.transform=`translate(${x-hx}px,${y}px) rotate(${spin}deg) scale(${sc})`;
+    });
+    if(t<total){raf=requestAnimationFrame(frame);return}
+    row.classList.add('gone');setEmotion('cool');
+    $('final').classList.add('show');
+    setTimeout(()=>$('final').classList.add('green'),150);
+    setTimeout(()=>{$('final').classList.add('tick');$('ok').classList.add('on')},800);
+  }
+  raf=requestAnimationFrame(frame);
+}
+
+// Enter key submits; links work with the keyboard
+const enter=(ids,btn)=>ids.forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key==='Enter')$(btn).click()}));
+enter(['id','pw'],'login');enter(['reg_name','reg_id','reg_pw'],'btn-register');enter(['forgot_id'],'btn-forgot');
+document.querySelectorAll('.links a,.forgot-link').forEach(a=>{
+  a.tabIndex=0;a.setAttribute('role','button');
+  a.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();a.click()}});
+});
+</script>
+</body>
+</html>
